@@ -1,6 +1,0 @@
-Hi to the following:
-<ul>
-  <% it.names.forEach((name) => { %>
-    <li><%= name %></li>
-  <% }) %>
-</ul>

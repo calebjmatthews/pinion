@@ -6,7 +6,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "eta": "^3.5.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "uuid": "^11.1.0"
   },
   "peerDependencies": {
     "typescript": "^5"

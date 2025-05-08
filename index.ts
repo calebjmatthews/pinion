@@ -1,6 +1,8 @@
-import Bun from 'bun';
+import Bun from "bun";
 import { Eta } from "eta";
 import path from "path";
+
+import posts from "./test_db/posts";
 
 const eta = new Eta({ views: path.join(__dirname, "templates") });
 
@@ -10,7 +12,7 @@ const server = Bun.serve({
     // Static routes
     "/api/status": new Response("OK"),
     "/*": () => new Response(
-      eta.render("./simple", { names: ["Carb", "Erm", "Haruki", "Mazel"] }), 
+      eta.render("./index", { title: "Posts on Pinion", posts }), 
       { headers: { "Content-Type": "text/html" } }
     )
   }
