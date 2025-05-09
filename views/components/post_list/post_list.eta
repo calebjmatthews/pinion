@@ -1,6 +1,6 @@
 <section>
   <h2>Posts</h2>
   <% it.posts.forEach((post) => { %>
-    <%~ include("./post", { post }) %>
+    <%~ include("../post/post", { post }) %>
   <% }) %>
 </section>

@@ -4,4 +4,4 @@
   <h2>Create a new post here</h2>
 </form>
 
-<%~ include("./components/post_list", { posts: it.posts }) %>
+<%~ include("../components/post_list/post_list", { posts: it.posts }) %>
