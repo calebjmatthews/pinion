@@ -2,7 +2,7 @@ import Bun from "bun";
 import { Eta } from "eta";
 import path from "path";
 
-import posts from "./test_db/posts";
+import postsGet from "./connectors/postsGet";
 
 const eta = new Eta({ views: path.join(__dirname, "templates") });
 
@@ -11,10 +11,13 @@ const server = Bun.serve({
   routes: {
     // Static routes
     "/api/status": new Response("OK"),
-    "/*": () => new Response(
-      eta.render("./index", { title: "Posts on Pinion", posts }), 
-      { headers: { "Content-Type": "text/html" } }
-    )
+    "/*": () => {
+      const posts = postsGet();
+      return new Response(
+        eta.render("./index", { title: "Posts on Pinion", posts }), 
+        { headers: { "Content-Type": "text/html" } }
+      );
+    } 
   }
 });
 

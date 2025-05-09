@@ -1,6 +1,6 @@
 <article>
   <header>
-    <h3><%= it.post.userId %></h3>
+    <h3><%= it.post.userName %></h3>
     <time datetime="<%= it.post.createdAt %>" ><%= it.post.createdAt %></time>
   </header>
   <p><%= it.post.text %></p>

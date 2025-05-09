@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-import Post from '../models/post';
+import { v4 as uuidv4 } from "uuid";
+import Post from "../models/post";
 
 const posts = [
   new Post({
