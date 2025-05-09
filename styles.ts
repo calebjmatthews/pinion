@@ -1,0 +1,1 @@
+import "./views/pages/global.css";
