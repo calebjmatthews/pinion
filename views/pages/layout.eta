@@ -9,6 +9,6 @@
     <section id="main">
       <%~ it.body %>
     </section>
-    <footer id="footer">Love, Pinion</footer>
+    <footer id="footer" class="responsive-container">Love, Pinion</footer>
   </body>
 </html>
