@@ -1,7 +1,15 @@
-<article>
-  <header>
-    <h3><%= it.post.userName %></h3>
-    <time datetime="<%= it.post.createdAt %>" ><%= it.post.createdAt %></time>
+<article class="post">
+  <header class="post-header">
+    <h3 class="post-user">
+      <%= it.post.userName %>
+    </h3>
   </header>
-  <p><%= it.post.text %></p>
+  <p class="post-text">
+    <%= it.post.text %>
+  </p>
+  <footer>
+    <time datetime="<%= it.post.createdAt %>" >
+      <%= it.post.createdAt %>
+    </time>
+  </footer>
 </article>
