@@ -1,0 +1,1 @@
+import "./views/components/post_new/post_new";

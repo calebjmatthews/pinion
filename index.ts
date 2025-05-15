@@ -5,7 +5,7 @@ import path from "path";
 import postsGet from "./connectors/postsGet";
 
 await Bun.build({
-  entrypoints: ['./styles.ts'],
+  entrypoints: ['./styles.ts', './scripts.ts'],
   outdir: './out',
 });
 
@@ -19,6 +19,11 @@ const server = Bun.serve({
     "/styles.css": new Response(
       await Bun.file("./out/styles.css").bytes(),
       { headers: { "Content-Type": "text/css" } }
+    ),
+
+    "/scripts.js": new Response(
+      await Bun.file("./out/scripts.js").bytes(),
+      { headers: { "Content-Type": "text/javascript" } }
     ),
 
     "/*": async () => {

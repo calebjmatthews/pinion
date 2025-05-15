@@ -1,0 +1,4 @@
+<form id="post-new">
+  <textarea placeholder="Say something new." class="post-new-input"></textarea>
+  <button role="submit" class="post-new-submit">Post</button>
+</form>

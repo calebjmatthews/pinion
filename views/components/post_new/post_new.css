@@ -1,0 +1,21 @@
+#post-new {
+  width: 100%;
+  display: flex;
+}
+
+.post-new-input {
+  flex: 1 0 auto;
+  border: 1px solid #777;
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.post-new-submit {
+  flex-grow: 0.1;
+  min-height: 100%;
+  background-color: #fff;
+  border: 1px solid #777;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}

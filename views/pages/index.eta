@@ -1,7 +1,7 @@
+<h1>🪶 Pinion</h1>
+
 <% layout('./layout') %>
 
-<form>
-  <h2>Create a new post here</h2>
-</form>
+<%~ include("../components/post_new/post_new") %>
 
 <%~ include("../components/post_list/post_list", { posts: it.posts }) %>
