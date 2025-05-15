@@ -1,20 +1,40 @@
+import { sql } from "bun";
+
+import Post, { type PostFromDBInterface } from "../models/post";
 import PostToDisplay from "../models/post_to_display";
-import users from "../test_db/users";
-import posts from "../test_db/posts";
+import User, { type UserFromDBInterface } from "../models/user";
 
-const postsGet: () => PostToDisplay[] = () => posts.map((post) => {
-  const { id, userId, createdAt, text } = post;
-  const user = users[userId];
-  if (!user) return;
+const postsGet: () => Promise<PostToDisplay[]> = async() => {
+  const postsRaw: PostFromDBInterface[] = await sql`
+    SELECT * FROM posts;
+  `;
+  const posts = postsRaw.map((postRaw) => new Post().fromDB(postRaw));
+  console.log(`raw posts:`, postsRaw);
 
-  return new PostToDisplay({
-    id,
-    userId: user.id,
-    userName: user.getName(),
-    userThumbnail: user.imageId,
-    createdAt,
-    text
-  });
-}).filter((post) => post !== undefined);
+  const usersRaw = await sql`
+    SELECT
+      id, handle, first_name, last_name, custom_name, image_id
+    FROM users;
+  `;
+  const userMap: { [id: string] : User } = {};
+  usersRaw.forEach((userRaw: UserFromDBInterface) => userMap[userRaw.id] = new User().fromDB(userRaw) );
+  console.log(`userMap`, userMap);
+
+  return posts.map((post: Post) => {
+    console.log(`post`, post);
+    const { id, userId, createdAt, body } = post;
+    const user = userMap[userId];
+    if (!user) return;
+  
+    return new PostToDisplay({
+      id,
+      userId,
+      userName: user.getName(),
+      userThumbnail: user.imageId,
+      createdAt,
+      body
+    });
+  }).filter((post) => post !== undefined);
+};
 
 export default postsGet;

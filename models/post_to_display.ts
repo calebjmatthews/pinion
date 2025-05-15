@@ -4,7 +4,7 @@ export default class PostToDisplay {
   userName: string = '';
   userThumbnail?: string;
   createdAt: Date = new Date();
-  text: string = '';
+  body: string = '';
 
   constructor(postToDisplay: PostToDisplayInterface) {
     Object.assign(this, postToDisplay);
@@ -17,5 +17,5 @@ interface PostToDisplayInterface {
   userName: string;
   userThumbnail?: string;
   createdAt: Date;
-  text: string;
+  body: string;
 };

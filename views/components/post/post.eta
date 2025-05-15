@@ -4,8 +4,8 @@
       <%= it.post.userName %>
     </h3>
   </header>
-  <p class="post-text">
-    <%= it.post.text %>
+  <p class="post-body">
+    <%= it.post.body %>
   </p>
   <footer>
     <time datetime="<%= it.post.createdAt %>" >

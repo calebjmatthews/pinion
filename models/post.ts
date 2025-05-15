@@ -2,16 +2,32 @@ export default class Post {
   id: string = '';
   userId: string = '';
   createdAt: Date = new Date();
-  text: string = '';
+  body: string = '';
 
-  constructor(post: PostInterface) {
-    Object.assign(this, post);
+  constructor(post?: PostInterface) {
+    if (post) Object.assign(this, post);
   };
+
+  fromDB(postFromDB: PostFromDBInterface) {
+    const { user_id, created_at } = postFromDB;
+    return new Post({
+      ...postFromDB,
+      userId: user_id,
+      createdAt: created_at
+    });
+  }
 };
 
 interface PostInterface {
   id: string;
   userId: string;
   createdAt: Date;
-  text: string;
+  body: string;
 };
+
+export interface PostFromDBInterface {
+  id: string;
+  user_id: string;
+  created_at: Date;
+  body: string;
+}
