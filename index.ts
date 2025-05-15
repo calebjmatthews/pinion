@@ -23,7 +23,6 @@ const server = Bun.serve({
 
     "/*": async () => {
       const posts = await postsGet();
-      console.log(`posts`, posts);
       return new Response(
         eta.render("./pages/index", { title: "Posts on Pinion", posts }), 
         { headers: { "Content-Type": "text/html" } }

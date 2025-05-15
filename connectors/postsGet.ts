@@ -9,7 +9,6 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
     SELECT * FROM posts;
   `;
   const posts = postsRaw.map((postRaw) => new Post().fromDB(postRaw));
-  console.log(`raw posts:`, postsRaw);
 
   const usersRaw = await sql`
     SELECT
@@ -18,10 +17,8 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   `;
   const userMap: { [id: string] : User } = {};
   usersRaw.forEach((userRaw: UserFromDBInterface) => userMap[userRaw.id] = new User().fromDB(userRaw) );
-  console.log(`userMap`, userMap);
 
   return posts.map((post: Post) => {
-    console.log(`post`, post);
     const { id, userId, createdAt, body } = post;
     const user = userMap[userId];
     if (!user) return;
