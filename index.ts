@@ -3,6 +3,7 @@ import { Eta } from "eta";
 import path from "path";
 
 import postsGet from "./connectors/postsGet";
+import handleApiRequest from "./api/handleApiRequest";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
@@ -25,6 +26,10 @@ const server = Bun.serve({
       await Bun.file("./out/scripts.js").bytes(),
       { headers: { "Content-Type": "text/javascript" } }
     ),
+
+    "/api/*": {
+      POST: async (request) => handleApiRequest(request)
+    },
 
     "/*": async () => {
       const posts = await postsGet();

@@ -3,19 +3,39 @@
   display: flex;
 }
 
-.post-new-input {
+#post-new-input {
   flex: 1 0 auto;
+  padding: 4px 8px;
   border: 1px solid #777;
   border-right: none;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  transition-property: color, background-color, border-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
 }
 
-.post-new-submit {
+#post-new-input:disabled {
+  background-color: #f9f9f9;
+}
+
+#post-new-submit {
   flex-grow: 0.1;
   min-height: 100%;
+  min-width: 100px;
   background-color: #fff;
   border: 1px solid #777;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  cursor: pointer;
+  transition-property: color, background-color, border-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+#post-new-submit:disabled {
+  color: #878787;
+  background-color: #f9f9f9;
+  border-color: #555;
+  cursor: auto;
 }
