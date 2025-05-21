@@ -3,7 +3,7 @@ import { Eta } from "eta";
 import path from "path";
 
 import postsGet from "./connectors/postsGet";
-import handleApiRequest from "./api/handleApiRequest";
+import handleApiRequest from "./handleApiRequest";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],

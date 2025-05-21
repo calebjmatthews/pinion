@@ -1,17 +1,19 @@
 const postNewSubmitOnClick = async (event: Event) => {
   event.preventDefault();
   const inputPostNew: HTMLTextAreaElement|null = document.querySelector("#post-new-input");
-  const inputPostSubmit: HTMLButtonElement|null = document.querySelector("#post-new-submit");
+  const submitPostNew: HTMLButtonElement|null = document.querySelector("#post-new-submit");
 
-  if (inputPostNew && inputPostSubmit) {
+  if (inputPostNew && submitPostNew) {
     inputPostNew.disabled = true;
-    inputPostSubmit.disabled = true;
-    inputPostSubmit.textContent = "Sending";
+    submitPostNew.disabled = true;
+    submitPostNew.textContent = "Sending";
 
+    const postBody = inputPostNew.value;
     const response = await fetch("/api/post_new", {
       method: "POST",
-      body: JSON.stringify("Hello")
+      body: JSON.stringify(postBody)
     });
+    if (response.status === 201) window.location.reload();
     console.log(`response`, response);
   }
 };
