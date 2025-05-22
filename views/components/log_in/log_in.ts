@@ -20,7 +20,10 @@ const formLogInClick = async (event: Event) => {
       body: JSON.stringify(loginBody)
     });
     console.log(`response`, response);
+    if (response.status === 202) window.location.reload();
   };
+
+  // ToDo: Handle rejected log in request
 };
 
 const attach = () => {

@@ -16,7 +16,7 @@ export default class User {
   };
 
   fromDB(userFromDB: UserFromDBInterface) {
-    const { id, created_at, last_logged_in, handle, email, first_name, last_name, custom_name, bio, image_id } = userFromDB;
+    const { id, created_at, last_logged_in, handle, email, password, first_name, last_name, custom_name, bio, image_id } = userFromDB;
     const user = new User({
       id,
       createdAt: created_at,
@@ -25,6 +25,7 @@ export default class User {
       email,
       bio
     });
+    if (password) user.password = password;
     if (first_name) user.firstName = first_name;
     if (last_name) user.lastName = last_name;
     if (custom_name) user.customName = custom_name;

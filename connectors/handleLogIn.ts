@@ -12,9 +12,7 @@ const handleLogIn = async (request: BunRequest) => {
   `;
   const user = usersRaw[0] && new User().fromDB(usersRaw[0]);
   if (user) {
-    console.log(`user matched:`, user);
     const passwordMatches = bcrypt.compareSync(requestBody.password, user.password);
-    console.log(`passwordMatches: `, passwordMatches);
     if (passwordMatches) {
       return await logInSuccess({ request, user });
     }
@@ -33,6 +31,12 @@ const logInSuccess = async (args: { request: BunRequest, user: User }) => {
   const { request, user } = args;
   delete user.password;
 
+  const clearSessionsResult = await sql`
+    DELETE FROM sessions WHERE user_id = ${user.id};
+  `;
+  // ToDo: Handle error in deleting existing sessions
+  console.log(`clearSessionsResult`, clearSessionsResult);
+
   const sessionId = crypto.randomUUID();
   const sessionIdHashed = bcrypt.hashSync(sessionId, 11);
   const sessionResult = await sql`
@@ -47,11 +51,12 @@ const logInSuccess = async (args: { request: BunRequest, user: User }) => {
     ) RETURNING ID;
   `;
   console.log(`sessionResult`, sessionResult);
+  // ToDo: Handle error in creating new session
   const cookieOptions = { httpOnly: true, secure: true, maxAge: 86400 };
   request.cookies.set("session_id", sessionId, cookieOptions);
   request.cookies.set("user_id", user.id, cookieOptions);
 
-  return new Response("Logged in");
+  return Response.json({ message: "Logged in" }, { status: 202 });
 };
 
 export default handleLogIn;
