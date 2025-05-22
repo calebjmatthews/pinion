@@ -1,3 +1,5 @@
-<header>
-  <h1>🪶 Pinion</h1>
+<header id="page-header">
+  <div class="responsive-container">
+    <h1>🪶 Pinion</h1>
+  </div>
 </header>

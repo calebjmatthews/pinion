@@ -1,0 +1,8 @@
+#page-header {
+  position: sticky;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+}
