@@ -1,10 +1,11 @@
-import Bun from "bun";
+import Bun, { type BunRequest } from "bun";
 import { Eta } from "eta";
 import path from "path";
 
 import postsGet from "./connectors/postsGet";
 import handleApiRequest from "./connectors/handleApiRequest";
 import handleLogIn from "./connectors/handleLogIn";
+import getUserFromSession from "./connectors/getUserFromSession";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
@@ -36,12 +37,19 @@ const server = Bun.serve({
       POST: async (request) => handleApiRequest(request)
     },
 
-    "/*": async () => {
+    "/": async (request: BunRequest) => {
+      console.log(`request headers:`, request.headers);
+      const authenticatedUser = await getUserFromSession(request.cookies);
+      console.log(`authenticatedUser`, authenticatedUser);
       const posts = await postsGet();
       return new Response(
-        eta.render("./pages/index", { title: "Posts on Pinion", posts }), 
+        eta.render("./pages/index", { title: "Posts on Pinion", posts, user: authenticatedUser }), 
         { headers: { "Content-Type": "text/html" } }
       );
+    },
+
+    "/*": () => {
+      return Response.json({ message: "Not found" }, { status: 404 });
     } 
   }
 });

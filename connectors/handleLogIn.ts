@@ -1,9 +1,9 @@
-import { sql } from "bun";
+import { sql, type BunRequest } from "bun";
 import bcrypt from "bcrypt";
 
 import User from "../models/user";
 
-const handleLogIn = async (request: Request) => {
+const handleLogIn = async (request: BunRequest) => {
   const requestBody = await request.json();
   const usersRaw = await sql`
     SELECT
@@ -16,28 +16,30 @@ const handleLogIn = async (request: Request) => {
     const passwordMatches = bcrypt.compareSync(requestBody.password, user.password);
     console.log(`passwordMatches: `, passwordMatches);
     if (passwordMatches) {
-      return await logInSuccess(user);
+      return await logInSuccess({ request, user });
     }
     else {
-      // Handle wrong password
+      // ToDo: Handle wrong password
     }
   }
   else {
-    // Handle no matching user found
+    // ToDo: Handle no matching user found
   }
 
   return new Response("OK");
 };
 
-const logInSuccess = async (user: User) => {
+const logInSuccess = async (args: { request: BunRequest, user: User }) => {
+  const { request, user } = args;
   delete user.password;
 
   const sessionId = crypto.randomUUID();
+  const sessionIdHashed = bcrypt.hashSync(sessionId, 11);
   const sessionResult = await sql`
     INSERT INTO sessions (
       id, user_id, created_at, last_used_at, expires_at
     ) VALUES (
-      ${sessionId},
+      ${sessionIdHashed},
       ${user.id},
       now(),
       now(),
@@ -45,12 +47,11 @@ const logInSuccess = async (user: User) => {
     ) RETURNING ID;
   `;
   console.log(`sessionResult`, sessionResult);
+  const cookieOptions = { httpOnly: true, secure: true, maxAge: 86400 };
+  request.cookies.set("session_id", sessionId, cookieOptions);
+  request.cookies.set("user_id", user.id, cookieOptions);
 
-  return new Response("Logged in", {
-    headers: {
-      "Set-Cookie": `session=${sessionId}; HttpOnly; Secure; Path=/; Max-Age=86400`
-    }
-  });
+  return new Response("Logged in");
 };
 
 export default handleLogIn;

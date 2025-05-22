@@ -20,8 +20,9 @@ const formLogInClick = async (event: Event) => {
 };
 
 const attach = () => {
-  const formLogIn = document.querySelector("#log-in");
+  const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
   if (formLogIn) {
+    formLogIn.style = "";
     formLogIn.addEventListener("submit", formLogInClick);
   }
   else { setTimeout(() => attach(), 10); }

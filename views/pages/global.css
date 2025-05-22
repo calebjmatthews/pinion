@@ -47,6 +47,11 @@ body {
   align-items: center;
 }
 
+h1 {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
 .responsive-container {
   width: 100%;
   max-width: 100%;

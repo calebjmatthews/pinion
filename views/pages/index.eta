@@ -1,7 +1,9 @@
-<h1>🪶 Pinion</h1>
-
 <% layout('./layout') %>
 
+<%~ include("../components/header/header") %>
+
 <%~ include("../components/log_in/log_in") %>
+
+<%~ include("../components/post_new/post_new") %>
 
 <%~ include("../components/post_list/post_list", { posts: it.posts }) %>

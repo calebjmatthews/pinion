@@ -1,4 +1,4 @@
-<form id="log-in">
+<form id="log-in" style="display: none">
   <div id="log-in-controls">
     <div class="log-in-control-row">
       <label for="log-in-email" class="log-in-label">Email or Handle</label>
