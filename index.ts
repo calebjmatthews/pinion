@@ -3,7 +3,8 @@ import { Eta } from "eta";
 import path from "path";
 
 import postsGet from "./connectors/postsGet";
-import handleApiRequest from "./handleApiRequest";
+import handleApiRequest from "./connectors/handleApiRequest";
+import handleLogIn from "./connectors/handleLogIn";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
@@ -26,6 +27,10 @@ const server = Bun.serve({
       await Bun.file("./out/scripts.js").bytes(),
       { headers: { "Content-Type": "text/javascript" } }
     ),
+
+    "/log_in": {
+      POST: async (request) => handleLogIn(request)
+    },
 
     "/api/*": {
       POST: async (request) => handleApiRequest(request)

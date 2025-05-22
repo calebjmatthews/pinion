@@ -14,8 +14,7 @@ const postNewSubmitOnClick = async (event: Event) => {
       body: JSON.stringify(postBody)
     });
     if (response.status === 201) window.location.reload();
-    console.log(`response`, response);
-  }
+  };
 };
 
 const attach = () => {
@@ -23,6 +22,6 @@ const attach = () => {
   if (formPostNew) {
     formPostNew.addEventListener("submit", postNewSubmitOnClick);
   }
-  else { setTimeout(() => attach(), 10); }
+  else { setTimeout(() => attach(), 10); };
 };
 attach();

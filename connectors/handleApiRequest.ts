@@ -1,4 +1,4 @@
-import postCreate from "./connectors/postCreate";
+import postCreate from "./postCreate";
 
 const handleApiRequest = async (request: Request) => {
   const requestBody = await request.json();

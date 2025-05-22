@@ -1,8 +1,13 @@
 export default class User {
   id: string = '';
   createdAt: Date = new Date();
-  firstName: string = '';
-  lastName: string = '';
+  lastLoggedIn: Date = new Date();
+  handle: string = '';
+  email: string = '';
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  customName?: string;
   bio: string = '';
   imageId?: string;
 
@@ -11,35 +16,49 @@ export default class User {
   };
 
   fromDB(userFromDB: UserFromDBInterface) {
-    const { created_at, first_name, last_name, image_id } = userFromDB;
+    const { created_at, last_logged_in,first_name, last_name, custom_name, image_id } = userFromDB;
     return new User({
       ...userFromDB,
       createdAt: created_at,
+      lastLoggedIn: last_logged_in,
       firstName: first_name,
       lastName: last_name,
+      customName: custom_name,
       imageId: image_id
     });
-  }
+  };
 
   getName() {
-    return `${this.firstName} ${this.lastName}`;
+    if (this.customName) return this.customName;
+    if (this.firstName && this.lastName) return `${this.firstName} ${this.lastName}`;
+    return this.handle;
   };
 };
 
 interface UserInterface {
   id: string ;
   createdAt: Date;
-  firstName: string;
-  lastName: string;
+  lastLoggedIn: Date;
+  handle: string;
+  email: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  customName?: string;
   bio: string;
   imageId?: string;
-}
+};
 
 export interface UserFromDBInterface {
   id: string ;
   created_at: Date;
-  first_name: string;
-  last_name: string;
+  last_logged_in: Date;
+  handle: string;
+  email: string;
+  password: string;
+  first_name?: string;
+  last_name?: string;
+  custom_name?: string;
   bio: string;
   image_id?: string;
-}
+};

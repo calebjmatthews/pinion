@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest",
+    "bcrypt": "^6.0.0",
     "eta": "^3.5.0",
     "path": "^0.12.7",
     "uuid": "^11.1.0"

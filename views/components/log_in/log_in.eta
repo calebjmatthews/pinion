@@ -1,0 +1,13 @@
+<form id="log-in">
+  <div id="log-in-controls">
+    <div class="log-in-control-row">
+      <label for="log-in-email" class="log-in-label">Email or Handle</label>
+      <input id="log-in-email" type="text" required placeholder="address@email.com" maxlength=254></input>
+    </div>
+    <div class="log-in-control-row">
+      <label for="log-in-password" class="log-in-label">Password</label>
+      <input id="log-in-password" type="password" required placeholder="●●●●●●●●" minlength="8"></input>
+    </div>
+  </div>
+  <button role="submit" id="log-in-submit">Go</button>
+</form>
