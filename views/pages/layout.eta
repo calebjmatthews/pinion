@@ -7,10 +7,11 @@
     <script src="./scripts.js"></script>
   </head>
   <body>
+    <%~ include("../components/header/header") %>
     <section id="main">
       <%~ it.body %>
     </section>
-    <footer id="footer" class="responsive-container">Love, Pinion</footer>
+    <%~ include("../components/footer/footer") %>
   </body>
   <%~ include("../components/state/state", { user: it.user }) %>
 </html>

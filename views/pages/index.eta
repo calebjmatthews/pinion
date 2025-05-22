@@ -1,7 +1,5 @@
 <% layout('./layout') %>
 
-<%~ include("../components/header/header") %>
-
 <%~ include("../components/log_in/log_in") %>
 
 <%~ include("../components/post_new/post_new") %>
