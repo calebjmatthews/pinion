@@ -38,12 +38,11 @@ const server = Bun.serve({
     },
 
     "/": async (request: BunRequest) => {
-      console.log(`request headers:`, request.headers);
-      const authenticatedUser = await getUserFromSession(request.cookies);
-      console.log(`authenticatedUser`, authenticatedUser);
+      const user = await getUserFromSession(request.cookies);
+      console.log(`user`, user);
       const posts = await postsGet();
       return new Response(
-        eta.render("./pages/index", { title: "Posts on Pinion", posts, user: authenticatedUser }), 
+        eta.render("./pages/index", { title: "Posts on Pinion", posts, user }), 
         { headers: { "Content-Type": "text/html" } }
       );
     },

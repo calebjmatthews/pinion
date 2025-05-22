@@ -16,16 +16,21 @@ export default class User {
   };
 
   fromDB(userFromDB: UserFromDBInterface) {
-    const { created_at, last_logged_in,first_name, last_name, custom_name, image_id } = userFromDB;
-    return new User({
-      ...userFromDB,
+    const { id, created_at, last_logged_in, handle, email, first_name, last_name, custom_name, bio, image_id } = userFromDB;
+    const user = new User({
+      id,
       createdAt: created_at,
       lastLoggedIn: last_logged_in,
-      firstName: first_name,
-      lastName: last_name,
-      customName: custom_name,
-      imageId: image_id
+      handle,
+      email,
+      bio
     });
+    if (first_name) user.firstName = first_name;
+    if (last_name) user.lastName = last_name;
+    if (custom_name) user.customName = custom_name;
+    if (image_id) user.imageId = image_id;
+    
+    return user;
   };
 
   getName() {

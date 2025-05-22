@@ -21,7 +21,19 @@ const formLogInClick = async (event: Event) => {
 
 const attach = () => {
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
-  if (formLogIn) {
+  const userState: HTMLSpanElement|null = document.querySelector("#state-user");
+  let user = null;
+  try {
+    if (userState?.textContent) {
+      user = JSON.parse(userState.textContent);
+    }
+  }
+  catch {
+    // ToDo: Log JSON parsing errors
+  };
+  console.log(`user`, user);
+
+  if (formLogIn && userState) {
     formLogIn.style = "";
     formLogIn.addEventListener("submit", formLogInClick);
   }

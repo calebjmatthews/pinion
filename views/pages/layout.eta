@@ -12,4 +12,5 @@
     </section>
     <footer id="footer" class="responsive-container">Love, Pinion</footer>
   </body>
+  <%~ include("../components/state/state", { user: it.user }) %>
 </html>

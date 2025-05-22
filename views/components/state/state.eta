@@ -1,0 +1,5 @@
+<div id="state" style="display: none">
+  <span id="state-user">
+    <%= JSON.stringify(it.user) %>
+  </span>
+</div>
