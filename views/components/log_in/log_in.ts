@@ -1,3 +1,7 @@
+import User from "../../../models/user";
+
+let user: User|null = null;
+
 const formLogInClick = async (event: Event) => {
   event.preventDefault();
   const emailLogin: HTMLInputElement|null = document.querySelector("#log-in-email");
@@ -22,19 +26,14 @@ const formLogInClick = async (event: Event) => {
 const attach = () => {
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
   const userState: HTMLSpanElement|null = document.querySelector("#state-user");
-  let user = null;
   try {
     if (userState?.textContent) {
-      user = JSON.parse(userState.textContent);
+      user = new User(JSON.parse(userState.textContent));
     }
-  }
-  catch {
-    // ToDo: Log JSON parsing errors
-  };
-  console.log(`user`, user);
+  } catch { };
 
   if (formLogIn && userState) {
-    formLogIn.style = "";
+    if (!user) formLogIn.style = "";
     formLogIn.addEventListener("submit", formLogInClick);
   }
   else { setTimeout(() => attach(), 10); }

@@ -1,3 +1,7 @@
+import User from "../../../models/user";
+
+let user: User|null = null;
+
 const postNewSubmitOnClick = async (event: Event) => {
   event.preventDefault();
   const inputPostNew: HTMLTextAreaElement|null = document.querySelector("#post-new-input");
@@ -18,8 +22,16 @@ const postNewSubmitOnClick = async (event: Event) => {
 };
 
 const attach = () => {
-  const formPostNew = document.querySelector("#post-new");
-  if (formPostNew) {
+  const formPostNew: HTMLFormElement|null = document.querySelector("#post-new");
+  const userState: HTMLSpanElement|null = document.querySelector("#state-user");
+  try {
+    if (userState?.textContent) {
+      user = new User(JSON.parse(userState.textContent));
+    }
+  } catch { };
+
+  if (formPostNew && userState) {
+    if (user) formPostNew.style = "";
     formPostNew.addEventListener("submit", postNewSubmitOnClick);
   }
   else { setTimeout(() => attach(), 10); };
