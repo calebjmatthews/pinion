@@ -21,7 +21,7 @@ const handleLogIn = async (request: BunRequest) => {
     }
   }
   else {
-    // ToDo: Handle no matching user found
+    return Response.json({ message: "No matching user" }, { status: 204 });
   }
 
   return new Response("OK");

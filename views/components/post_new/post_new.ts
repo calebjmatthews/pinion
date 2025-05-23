@@ -31,7 +31,7 @@ const attach = () => {
   } catch { };
 
   if (formPostNew && userState) {
-    if (user) formPostNew.style = "";
+    if (user) formPostNew.style = "display: flex";
     formPostNew.addEventListener("submit", postNewSubmitOnClick);
   }
   else { setTimeout(() => attach(), 10); };

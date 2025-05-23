@@ -1,12 +1,35 @@
-<form id="log-in" style="display: none">
+<form id="log-in" class="responsive-container log-in-container" style="display: none">
   <div id="log-in-controls">
-    <div class="log-in-control-row">
-      <label for="log-in-email" class="log-in-label">Email or Handle</label>
-      <input id="log-in-email" type="text" required placeholder="address@email.com" maxlength=254></input>
+    <p id="no-user-explanation" style="display: none"></p>
+    <div class="log-in-control-couplet">
+      <div id="log-in-email-control" class="log-in-control">
+        <label for="log-in-email" class="log-in-label">Email or Handle</label>
+        <input id="log-in-email" type="text" required placeholder="address@email.com" maxlength=254></input>
+      </div>
+      <div id="log-in-handle-control" class="log-in-control" style="display: none">
+        <label for="log-in-handle" class="log-in-label">Handle</label>
+        <input id="log-in-handle" type="text" placeholder="address" maxlength=200></input>
+      </div>
     </div>
-    <div class="log-in-control-row">
-      <label for="log-in-password" class="log-in-label">Password</label>
-      <input id="log-in-password" type="password" required placeholder="●●●●●●●●" minlength="8"></input>
+    <div class="log-in-control-couplet">
+      <div id="log-in-password-control" class="log-in-control">
+        <label for="log-in-password" class="log-in-label">Password</label>
+        <input id="log-in-password" type="password" required minlength="8"></input>
+      </div>
+      <div id="log-in-password-confirm-control" class="log-in-control" style="display: none">
+        <label for="log-in-password-confirm" class="log-in-label">Confirm Password</label>
+        <input id="log-in-password-confirm" type="password" minlength="8"></input>
+      </div>
+    </div>
+    <div class="log-in-control-couplet">
+      <div id="log-in-first-name-control" class="log-in-control" style="display: none">
+        <label for="log-in-first-name" class="log-in-label" placeholder="First Name">First Name (optional)</label>
+        <input id="log-in-first-name" type="text" maxlength=50></input>
+      </div>
+      <div id="log-in-last-name-control" class="log-in-control" style="display: none">
+        <label for="log-in-last-name" class="log-in-label" placeholder="Last Name">Last Name (optional)</label>
+        <input id="log-in-last-name" type="text" maxlength=50></input>
+      </div>
     </div>
   </div>
   <button role="submit" id="log-in-submit">Go</button>
