@@ -10,14 +10,16 @@
         <%~ include("../../icons/globe") %>
         <span class="nav-label">World</a>
       </a>
-      <a>
-        <%~ include("../../icons/group") %>
-        <span class="nav-label">Groups</a>
-      </a>
-      <a>
-        <%~ include("../../icons/profile") %>
-        <span class="nav-label">Account</a>
-      </a>
+      <% if (it.user) { %>
+        <a>
+          <%~ include("../../icons/group") %>
+          <span class="nav-label">Groups</a>
+        </a>
+        <a>
+          <%~ include("../../icons/profile") %>
+          <span class="nav-label">Account</a>
+        </a>
+      <% } %>
     </nav>
   </div>
 </header>

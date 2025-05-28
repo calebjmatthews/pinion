@@ -7,7 +7,7 @@
     <script src="./scripts.js"></script>
   </head>
   <body>
-    <%~ include("../components/header/header") %>
+    <%~ include("../components/header/header", { user: it.user })  %>
     <section id="main">
       <%~ it.body %>
     </section>
