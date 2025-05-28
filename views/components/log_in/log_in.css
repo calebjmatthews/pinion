@@ -19,6 +19,13 @@
 .sign-up-container {
   flex-direction: column;
 
+  .log-in-control-couplet {
+    flex-direction: column;
+
+    @media (min-width: 430px) {
+      flex-direction: row;
+    }
+  }
   #log-in-controls {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
