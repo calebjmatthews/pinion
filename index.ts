@@ -5,6 +5,7 @@ import path from "path";
 import postsGet from "./connectors/postsGet";
 import handleApiRequest from "./connectors/handleApiRequest";
 import handleLogIn from "./connectors/handleLogIn";
+import handleSignUp from "./connectors/handleSignUp";
 import getUserFromSession from "./connectors/getUserFromSession";
 
 await Bun.build({
@@ -31,6 +32,10 @@ const server = Bun.serve({
 
     "/log_in": {
       POST: async (request) => handleLogIn(request)
+    },
+
+    "/sign_up": {
+      POST: async (request) => handleSignUp(request)
     },
 
     "/api/*": {

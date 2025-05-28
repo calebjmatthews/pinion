@@ -2,8 +2,15 @@ import User from "../../../models/user";
 
 let user: User|null = null;
 
-const formLogInClick = async (event: Event) => {
+const formClick = async (event: Event) => {
   event.preventDefault();
+  const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
+  let isSignUpForm = ((formLogIn?.className || '').includes('sign-up-container'));
+  if (isSignUpForm) { signUpClick(); }
+  else { logInClick(); }
+};
+
+const logInClick = async () => {
   const emailInput: HTMLInputElement|null = document.querySelector("#log-in-email");
   const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
   const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in-submit");
@@ -14,10 +21,10 @@ const formLogInClick = async (event: Event) => {
     submitLogin.disabled = true;
     submitLogin.textContent = "Sending";
 
-    const loginBody = { email: emailInput.value, password: passwordInput.value };
+    const logInBody = { email: emailInput.value, password: passwordInput.value };
     const response = await fetch("/log_in", {
       method: "POST",
-      body: JSON.stringify(loginBody)
+      body: JSON.stringify(logInBody)
     });
     console.log(`response`, response);
     if (response.status === 202) window.location.reload();
@@ -35,14 +42,14 @@ const revealSignUp = (args: {
   const { emailInput, passwordInput, submitLogin } = args;
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
   const noUserExplanation: HTMLParagraphElement|null = document.querySelector("#no-user-explanation");
-  const logInHandleControl: HTMLDivElement|null =  document.querySelector("#log-in-handle-control");
-  const logInHandleInput: HTMLInputElement|null = document.querySelector('#log-in-handle');
-  const logInPasswordConfirmControl: HTMLDivElement|null =  document.querySelector("#log-in-password-confirm-control");
-  const logInPasswordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
-  const logInFirstNameControl: HTMLDivElement|null =  document.querySelector("#log-in-first-name-control");
-  const logInLastNameControl: HTMLDivElement|null =  document.querySelector("#log-in-last-name-control");
+  const handleControl: HTMLDivElement|null =  document.querySelector("#log-in-handle-control");
+  const handleInput: HTMLInputElement|null = document.querySelector('#log-in-handle');
+  const passwordConfirmControl: HTMLDivElement|null =  document.querySelector("#log-in-password-confirm-control");
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
+  const firstNameControl: HTMLDivElement|null =  document.querySelector("#log-in-first-name-control");
+  const lastNameControl: HTMLDivElement|null =  document.querySelector("#log-in-last-name-control");
 
-  if (formLogIn && noUserExplanation && logInHandleControl && logInHandleInput && logInPasswordConfirmControl && logInPasswordConfirmInput && logInFirstNameControl && logInLastNameControl) {
+  if (formLogIn && noUserExplanation && handleControl && handleInput && passwordConfirmControl && passwordConfirmInput && firstNameControl && lastNameControl) {
     formLogIn.classList = "responsive-container sign-up-container";
     emailInput.disabled = false;
     passwordInput.disabled = false;
@@ -50,17 +57,66 @@ const revealSignUp = (args: {
     submitLogin.textContent = "Go";
     noUserExplanation.style = "display: revert";
     noUserExplanation.textContent = `We didn't find a user with an email or handle of "${emailInput.value}". You can create a new account below:`;
-    logInHandleControl.style = "display: flex";
-    logInHandleInput.required = true;
-    logInHandleInput.value = emailInput.value.split('@')[0] || "";
-    logInPasswordConfirmControl.style = "display: flex";
-    logInPasswordConfirmInput.required = true;
-    logInFirstNameControl.style = "display: flex";
-    logInLastNameControl.style = "display: flex";
+    handleControl.style = "display: flex";
+    handleInput.required = true;
+    handleInput.value = emailInput.value.split('@')[0] || "";
+    passwordConfirmControl.style = "display: flex";
+    passwordConfirmInput.required = true;
+    passwordConfirmInput.addEventListener("input", passwordConfirmInputChange);
+    firstNameControl.style = "display: flex";
+    lastNameControl.style = "display: flex";
   };
 };
 
-const attach = () => {
+const passwordConfirmInputChange = () => {
+  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
+
+  if (passwordInput && passwordConfirmInput) {
+    passwordConfirmInput.setCustomValidity("");
+
+    if (passwordInput.value !== passwordConfirmInput.value) {
+      passwordConfirmInput.setCustomValidity("Passwords do not match");
+    };
+  };
+};
+
+const signUpClick = async () => {
+  const emailInput: HTMLInputElement|null = document.querySelector("#log-in-email");
+  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
+  const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in-submit");
+  const handleInput: HTMLInputElement|null = document.querySelector('#log-in-handle');
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
+  const firstNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in-first-name');
+  const lastNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in-last-name');
+  if (emailInput && passwordInput && submitLogin && handleInput && passwordConfirmInput && firstNameHandleInput && lastNameHandleInput) {
+    emailInput.disabled = true;
+    passwordInput.disabled = true;
+    submitLogin.disabled = true;
+    handleInput.disabled = true;
+    passwordConfirmInput.disabled = true;
+    firstNameHandleInput.disabled = true;
+    lastNameHandleInput.disabled = true;
+    submitLogin.textContent = "Sending";
+
+    const signUpBody = {
+      email: emailInput.value,
+      password: passwordInput.value,
+      handle: handleInput.value,
+      firstName: firstNameHandleInput.value,
+      lastName: lastNameHandleInput.value
+    };
+    console.log(`singUpBody:`, signUpBody);
+    const response = await fetch("/sign_up", {
+      method: "POST",
+      body: JSON.stringify(signUpBody)
+    });
+    console.log(`response`, response);
+    if (response.status === 202) window.location.reload();
+  };
+};
+
+const onLoad = () => {
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
   const userState: HTMLSpanElement|null = document.querySelector("#state-user");
   try {
@@ -71,8 +127,8 @@ const attach = () => {
 
   if (formLogIn && userState) {
     if (!user) formLogIn.style = "display: flex";
-    formLogIn.addEventListener("submit", formLogInClick);
+    formLogIn.addEventListener("submit", formClick);
   }
-  else { setTimeout(() => attach(), 10); }
+  else { setTimeout(() => onLoad(), 10); }
 };
-attach();
+onLoad();

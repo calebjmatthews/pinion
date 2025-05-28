@@ -3,32 +3,24 @@ import bcrypt from "bcrypt";
 
 import User from "../models/user";
 
-const handleLogIn = async (request: BunRequest) => {
+const handleSignUp = async (request: BunRequest) => {
   const requestBody = await request.json();
-  const usersRaw = await sql`
-    SELECT
-      id, created_at, last_logged_in, handle, email, password, first_name, last_name, custom_name, bio, image_id
-    FROM users WHERE email = ${requestBody.email} OR handle = ${requestBody.handle};
+
+  const user = new User(requestBody);
+  const userFromDB = user.toDB(requestBody);
+  delete userFromDB.id;
+  userFromDB.password = bcrypt.hashSync(userFromDB.password, 11);
+  console.log(`userFromDB`, userFromDB);
+
+  const userInsertResult = await sql`
+    INSERT INTO users ${sql(userFromDB)}
+    RETURNING id;
   `;
-  const user = usersRaw[0] && new User().fromDB(usersRaw[0]);
-  if (user) {
-    const passwordMatches = bcrypt.compareSync(requestBody.password, user.password);
-    if (passwordMatches) {
-      return await logInSuccess({ request, user });
-    }
-    else {
-      // ToDo: Handle wrong password
-    }
-  }
-  else {
-    return Response.json({ message: "No matching user" }, { status: 204 });
-  }
+  console.log(`userInsertResult`, userInsertResult);
 
-  return new Response("OK");
-};
+  // ToDo: Handle user insertion failure
 
-const logInSuccess = async (args: { request: BunRequest, user: User }) => {
-  const { request, user } = args;
+  user.id = userInsertResult[0].id;
   delete user.password;
 
   const clearSessionsResult = await sql`
@@ -56,7 +48,7 @@ const logInSuccess = async (args: { request: BunRequest, user: User }) => {
   request.cookies.set("session_id", sessionId, cookieOptions);
   request.cookies.set("user_id", user.id, cookieOptions);
 
-  return Response.json({ message: "Logged in" }, { status: 202 });
+  return Response.json({ message: "User record created" }, { status: 202 });
 };
 
-export default handleLogIn;
+export default handleSignUp;

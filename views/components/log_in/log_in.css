@@ -11,7 +11,6 @@
   }
 
   #log-in-submit {
-    height: 48px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
   }
@@ -26,6 +25,7 @@
     border-bottom-width: 0;
   }
   #log-in-submit {
+    height: 48px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }

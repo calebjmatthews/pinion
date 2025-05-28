@@ -26,6 +26,9 @@ const postCreate = async (postBody: string) => {
       ARRAY[${hashtags}]
     ) RETURNING id;
   `;
+
+  // ToDo: Handle error in postInsert SQL
+
   return Response.json({ id: postInsertResult[0].id }, { status: 201 });
 };
 
