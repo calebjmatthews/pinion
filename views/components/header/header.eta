@@ -1,5 +1,23 @@
 <header id="page-header">
-  <div class="responsive-container">
-    <h1>🪶 Pinion</h1>
+  <div id="header-wrapper" class="responsive-container">
+    <h1><%~ include("../../icons/feather") %>Pinion</h1>
+    <nav id="header-nav">
+      <a>
+        <%~ include("../../icons/magnifying_glass") %>
+        <span class="nav-label">Search</a>
+      </a>
+      <a>
+        <%~ include("../../icons/globe") %>
+        <span class="nav-label">World</a>
+      </a>
+      <a>
+        <%~ include("../../icons/group") %>
+        <span class="nav-label">Groups</a>
+      </a>
+      <a>
+        <%~ include("../../icons/profile") %>
+        <span class="nav-label">Account</a>
+      </a>
+    </nav>
   </div>
 </header>
