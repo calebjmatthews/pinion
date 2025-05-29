@@ -5,3 +5,8 @@
   background: #fdfcff;
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
 }
+
+.post-created-at {
+  font-size: 14px;
+  color: #635b6e;
+}

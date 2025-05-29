@@ -16,7 +16,7 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
     FROM users;
   `;
   const userMap: { [id: string] : User } = {};
-  usersRaw.forEach((userRaw: UserFromDBInterface) => userMap[userRaw.id] = new User().fromDB(userRaw) );
+  usersRaw.forEach((userRaw: UserFromDBInterface) => userMap[userRaw.id || ''] = new User().fromDB(userRaw) );
 
   return posts.map((post: Post) => {
     const { id, userId, createdAt, body } = post;
