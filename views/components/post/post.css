@@ -1,12 +1,42 @@
 .post {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 16px;
   border: 1px solid #777;
   border-radius: 16px;
   background: #fdfcff;
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
+
+  header {
+    line-height: 1;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    line-height: 1;
+  }
 }
 
 .post-created-at {
   font-size: 14px;
   color: #635b6e;
+}
+
+.post-reply-button {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #635b6e;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    fill: #635b6e;
+  }
 }

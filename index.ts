@@ -47,7 +47,7 @@ const server = Bun.serve({
       console.log(`user`, user);
       const posts = await postsGet();
       return new Response(
-        eta.render("./pages/index", { title: "Posts on Pinion", posts, user }), 
+        eta.render("./pages/index", { title: "Pinion", posts, user }), 
         { headers: { "Content-Type": "text/html" } }
       );
     },

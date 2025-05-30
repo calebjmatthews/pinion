@@ -11,5 +11,9 @@
     <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
       <%= it.post.createdAtLabel %>
     </time>
+    <button class="post-reply-button">
+      <%~ include("../../icons/reply") %>
+      Reply
+    </button>
   </footer>
 </article>
