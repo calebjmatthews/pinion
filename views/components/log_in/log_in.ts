@@ -116,7 +116,7 @@ const signUpClick = async () => {
   };
 };
 
-const onLoad = () => {
+const logInOnLoad = () => {
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
   const userState: HTMLSpanElement|null = document.querySelector("#state-user");
   try {
@@ -129,6 +129,6 @@ const onLoad = () => {
     if (!user) formLogIn.style = "display: flex";
     formLogIn.addEventListener("submit", formClick);
   }
-  else { setTimeout(() => onLoad(), 10); }
+  else { setTimeout(() => logInOnLoad(), 10); }
 };
-onLoad();
+logInOnLoad();

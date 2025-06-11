@@ -1,0 +1,12 @@
+#reply-new-wrapper {
+  position: relative;
+  top: -9px;
+
+  .post-new-input {
+    border-top-left-radius: 0;
+  }
+
+  .post-new-submit {
+    border-top-right-radius: 0;
+  }
+}

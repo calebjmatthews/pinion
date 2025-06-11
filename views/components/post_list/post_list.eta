@@ -3,4 +3,5 @@
   <% it.posts.forEach((post) => { %>
     <%~ include("../post/post", { post }) %>
   <% }) %>
+  <%~ include("../reply_new/reply_new") %>
 </section>

@@ -1,4 +1,4 @@
-<article class="post">
+<article id="post-<%= it.post.id %>" class="post">
   <header class="post-header">
     <h3 class="post-user">
       <%= it.post.userName %>
@@ -11,7 +11,7 @@
     <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
       <%= it.post.createdAtLabel %>
     </time>
-    <button class="post-reply-button">
+    <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button">
       <%~ include("../../icons/reply") %>
       Reply
     </button>

@@ -20,13 +20,18 @@
   }
 }
 
+.post.replied-to {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .post-created-at {
   font-size: 14px;
   color: #635b6e;
 }
 
 .post-reply-button {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 2px;
   padding: 4px;
