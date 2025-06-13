@@ -1,3 +1,8 @@
+.post-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
+}
+
 .post {
   display: flex;
   flex-direction: column;
@@ -6,8 +11,7 @@
   border: 1px solid #777;
   border-radius: 16px;
   background: #fdfcff;
-  box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
-
+  
   header {
     line-height: 1;
   }

@@ -1,19 +1,21 @@
-<article id="post-<%= it.post.id %>" class="post">
-  <header class="post-header">
-    <h3 class="post-user">
-      <%= it.post.userName %>
-    </h3>
-  </header>
-  <p class="post-body">
-    <%= it.post.body %>
-  </p>
-  <footer>
-    <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
-      <%= it.post.createdAtLabel %>
-    </time>
-    <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button">
-      <%~ include("../../icons/reply") %>
-      Reply
-    </button>
-  </footer>
-</article>
+<section class="post-wrapper">
+  <article id="post-<%= it.post.id %>" class="post">
+    <header class="post-header">
+      <h3 class="post-user">
+        <%= it.post.userName %>
+      </h3>
+    </header>
+    <p class="post-body">
+      <%= it.post.body %>
+    </p>
+    <footer>
+      <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
+        <%= it.post.createdAtLabel %>
+      </time>
+      <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button">
+        <%~ include("../../icons/reply") %>
+        Reply
+      </button>
+    </footer>
+  </article>
+</section>

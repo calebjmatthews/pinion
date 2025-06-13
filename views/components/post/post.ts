@@ -2,24 +2,42 @@ import User from "../../../models/user";
 
 let user: User|null = null;
 
-const replyClick = (event: Event) => {
+const replyClick = async (event: Event) => {
   if (!(event.target instanceof HTMLButtonElement)) return;
   const postId = event.target.id.replace('post-reply-button-', '');
 
-  const postList: HTMLElement|null = document.querySelector('.post-list');
   const replyNew: HTMLFormElement|null = document.querySelector('#reply-new-wrapper');
-  const lastPostClicked = replyNew?.previousSibling;
+  const lastPostClicked = replyNew?.previousElementSibling;
   const postClicked: HTMLElement|null = document.querySelector(`#post-${postId}`);
-  if (!postList || !replyNew || !postClicked) return;
+  const postClickedWrapper: HTMLElement|null|undefined = postClicked?.parentElement;
+  if (!replyNew || !postClicked || !postClickedWrapper) return;
 
-  // Reveal new reply form component
+  await hideExistingReplyNew({ lastPostClicked, replyNew });
+
   replyNew.style = "display: flex";
+  replyNew.className = replyNew.className.replace('reply-new-shrink', '').trim();
+  replyNew.className = `${replyNew.className} reply-new-grow`;
 
   postClicked.className = `${postClicked.className} replied-to`;
+  postClickedWrapper.appendChild(replyNew);
+};
+
+const hideExistingReplyNew = async (args: {
+  lastPostClicked: ChildNode|null|undefined,
+  replyNew: HTMLFormElement
+}) => {
+  const { lastPostClicked, replyNew } = args;
   if (lastPostClicked instanceof HTMLElement) {
-    lastPostClicked.className = lastPostClicked.className.replace(' replied-to', '');
+    replyNew.className = replyNew.className.replace('reply-new-grow', '').trim();
+    replyNew.className = `${replyNew.className} reply-new-shrink`;
+    console.log(`replyNew.className 1`, replyNew.className);
+
+    return new Promise((resolve) => { setTimeout(() => {
+      lastPostClicked.className = lastPostClicked.className.replace(' replied-to', '');
+      resolve(true);
+    }, 200); });
   };
-  postList.insertBefore(replyNew, postClicked.nextSibling);
+  return false;
 };
 
 const postsOnLoad = () => {
