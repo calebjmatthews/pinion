@@ -1,4 +1,5 @@
 import User from "../../../models/user";
+import revealElements from "../../../utils/reveal_elements";
 
 let user: User|null = null;
 
@@ -55,16 +56,14 @@ const revealSignUp = (args: {
     passwordInput.disabled = false;
     submitLogin.disabled = false;
     submitLogin.textContent = "Go";
-    noUserExplanation.style = "display: revert";
+
+    revealElements([noUserExplanation, handleControl, passwordConfirmControl, firstNameControl, lastNameControl]);
+    
     noUserExplanation.textContent = `We didn't find a user with an email or handle of "${emailInput.value}". You can create a new account below:`;
-    handleControl.style = "display: flex";
     handleInput.required = true;
     handleInput.value = emailInput.value.split('@')[0] || "";
-    passwordConfirmControl.style = "display: flex";
     passwordConfirmInput.required = true;
     passwordConfirmInput.addEventListener("input", passwordConfirmInputChange);
-    firstNameControl.style = "display: flex";
-    lastNameControl.style = "display: flex";
   };
 };
 
@@ -126,7 +125,7 @@ const logInOnLoad = () => {
   } catch { };
 
   if (formLogIn && userState) {
-    if (!user) formLogIn.style = "display: flex";
+    if (!user) revealElements([formLogIn]);
     formLogIn.addEventListener("submit", formClick);
   }
   else { setTimeout(() => logInOnLoad(), 10); }

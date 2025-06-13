@@ -1,4 +1,4 @@
-<div id="state" style="display: none">
+<div id="state" class="display-none">
   <span id="state-user">
     <%= JSON.stringify(it.user) %>
   </span>
