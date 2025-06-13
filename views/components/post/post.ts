@@ -2,6 +2,7 @@ import User from "../../../models/user";
 import revealElements from "../../../utils/reveal_elements";
 
 let user: User|null = null;
+const EXISTING_REPLY_HIDE_ANIMATION_DURATION = 200;
 
 const replyClick = async (event: Event) => {
   if (!(event.target instanceof HTMLButtonElement)) return;
@@ -14,13 +15,7 @@ const replyClick = async (event: Event) => {
   if (!replyNew || !postClicked || !postClickedWrapper) return;
 
   await hideExistingReplyNew({ lastPostClicked, replyNew });
-
-  revealElements([replyNew]);
-  replyNew.classList.remove('reply-new-shrink');
-  replyNew.classList.add('reply-new-grow');
-
-  postClicked.classList.add('replied-to');
-  postClickedWrapper.appendChild(replyNew);
+  revealReplyNew({ replyNew, postClicked, postClickedWrapper });
 };
 
 const hideExistingReplyNew = async (args: {
@@ -35,9 +30,24 @@ const hideExistingReplyNew = async (args: {
     return new Promise((resolve) => { setTimeout(() => {
       lastPostClicked.classList.remove('replied-to');
       resolve(true);
-    }, 200); });
+    }, EXISTING_REPLY_HIDE_ANIMATION_DURATION); });
   };
   return false;
+};
+
+const revealReplyNew = (args: {
+  replyNew: HTMLFormElement,
+  postClicked: HTMLElement,
+  postClickedWrapper: HTMLElement
+}) => {
+  const { replyNew, postClicked, postClickedWrapper } = args;
+
+  revealElements([replyNew]);
+  replyNew.classList.remove('reply-new-shrink');
+  replyNew.classList.add('reply-new-grow');
+
+  postClicked.classList.add('replied-to');
+  postClickedWrapper.appendChild(replyNew);
 };
 
 const postsOnLoad = () => {
