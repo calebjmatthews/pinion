@@ -1,4 +1,5 @@
 import User from "../../../models/user";
+import revealElements from "../../../utils/reveal_elements";
 
 let user: User|null = null;
 
@@ -14,11 +15,11 @@ const replyClick = async (event: Event) => {
 
   await hideExistingReplyNew({ lastPostClicked, replyNew });
 
-  replyNew.style = "display: flex";
-  replyNew.className = replyNew.className.replace('reply-new-shrink', '').trim();
-  replyNew.className = `${replyNew.className} reply-new-grow`;
+  revealElements([replyNew]);
+  replyNew.classList.remove('reply-new-shrink');
+  replyNew.classList.add('reply-new-grow');
 
-  postClicked.className = `${postClicked.className} replied-to`;
+  postClicked.classList.add('replied-to');
   postClickedWrapper.appendChild(replyNew);
 };
 
@@ -27,13 +28,12 @@ const hideExistingReplyNew = async (args: {
   replyNew: HTMLFormElement
 }) => {
   const { lastPostClicked, replyNew } = args;
-  if (lastPostClicked instanceof HTMLElement) {
-    replyNew.className = replyNew.className.replace('reply-new-grow', '').trim();
-    replyNew.className = `${replyNew.className} reply-new-shrink`;
-    console.log(`replyNew.className 1`, replyNew.className);
+  if (lastPostClicked instanceof HTMLElement && replyNew.classList.contains('display-flex')) {
+    replyNew.classList.remove('reply-new-grow');
+    replyNew.classList.add('reply-new-shrink');
 
     return new Promise((resolve) => { setTimeout(() => {
-      lastPostClicked.className = lastPostClicked.className.replace(' replied-to', '');
+      lastPostClicked.classList.remove('replied-to');
       resolve(true);
     }, 200); });
   };
@@ -53,7 +53,7 @@ const postsOnLoad = () => {
   if (postReplyButtons.length > 0 && userState) {
     if (!user) return;
     postReplyButtons.forEach((postReplyButton) => {
-      postReplyButton.style = "display: flex";
+      revealElements([postReplyButton]);
       postReplyButton.addEventListener("click", replyClick);
     });
   }
