@@ -1,6 +1,6 @@
 <div id="reply-new-wrapper" class="display-none">
   <form class="responsive-container post-new-form">
-    <textarea placeholder="Reply to this post." class="post-new-input" required maxlength="300"></textarea>
-    <button role="submit" class="post-new-submit">Go</button>
+    <textarea id="reply-new-input" placeholder="Reply to this post." class="post-new-input" required maxlength="300"></textarea>
+    <button id="reply-new-submit" role="submit" class="post-new-submit">Go</button>
   </form>
 </div>

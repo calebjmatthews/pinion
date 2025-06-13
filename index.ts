@@ -17,6 +17,7 @@ const eta = new Eta({ views: path.join(__dirname, "views") });
 
 const server = Bun.serve({
   port: 3000,
+  websocket: { message: () => {} },
   routes: {
     "/api/status": new Response("OK"),
 
