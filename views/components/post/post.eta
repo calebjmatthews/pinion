@@ -12,7 +12,7 @@
       <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
         <%= it.post.createdAtLabel %>
       </time>
-      <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button">
+      <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button display-none">
         <%~ include("../../icons/reply") %>
         Reply
       </button>

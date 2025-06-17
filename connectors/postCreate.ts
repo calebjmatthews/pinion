@@ -2,8 +2,8 @@ import { sql, type BunRequest } from "bun";
 
 import getUserFromSession from "./getUserFromSession";
 
-const postCreate = async (request: BunRequest) => {
-  const postBody = await request.json();
+const postCreate = async (request: BunRequest, options?: { bodyAlreadyProcessed: string }) => {
+  const postBody = options?.bodyAlreadyProcessed || await request.json();
   const hashtags = extractHashtags(postBody);
   const user = await getUserFromSession(request.cookies);
 
