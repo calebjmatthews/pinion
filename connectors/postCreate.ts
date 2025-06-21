@@ -15,7 +15,7 @@ const postCreate = async (request: BunRequest, options?: { bodyAlreadyProcessed:
       user_id, body
     ) VALUES (
       ${user.id},
-      ${postBody},
+      ${postBody}
     ) RETURNING id;
   `;
 
