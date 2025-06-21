@@ -41,13 +41,10 @@ const logInSuccess = async (args: { request: BunRequest, user: User }) => {
   const sessionIdHashed = bcrypt.hashSync(sessionId, 11);
   const sessionResult = await sql`
     INSERT INTO sessions (
-      id, user_id, created_at, last_used_at, expires_at
+      id, user_id
     ) VALUES (
       ${sessionIdHashed},
-      ${user.id},
-      now(),
-      now(),
-      now() + make_interval(secs => 86400)
+      ${user.id}
     ) RETURNING id;
   `;
   console.log(`sessionResult`, sessionResult);
