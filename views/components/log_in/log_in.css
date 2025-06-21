@@ -13,6 +13,7 @@
 }
 
 .sign-up-container {
+  display: flex;
   flex-direction: column;
 
   .log-in-control-couplet {

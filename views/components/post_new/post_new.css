@@ -3,7 +3,7 @@
   display: flex;
 }
 
-.post-new-input {
+.multiline-input {
   flex: 1 0 auto;
   padding: 4px 8px;
   border: 1px solid #777;
@@ -15,11 +15,11 @@
   transition-timing-function: ease-in-out;
 }
 
-.post-new-input:disabled {
+.multiline-input:disabled {
   background-color: #f9f9f9;
 }
 
-.post-new-submit {
+.multiline-submit {
   flex-grow: 0.1;
   min-height: 100%;
   min-width: 100px;

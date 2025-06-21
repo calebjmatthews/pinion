@@ -12,12 +12,12 @@
   position: relative;
   overflow: hidden;
 
-  .post-new-input {
+  .multiline-input {
     border-top-left-radius: 0;
     border-top: 0;
   }
 
-  .post-new-submit {
+  .multiline-submit {
     border-top-right-radius: 0;
     border-top: 0;
   }

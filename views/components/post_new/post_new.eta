@@ -1,4 +1,4 @@
 <form id="post-new" class="responsive-container post-new-form" style="display: none">
-  <textarea placeholder="Say something new." class="post-new-input" required maxlength="300"></textarea>
-  <button role="submit" class="post-new-submit">Post</button>
+  <textarea placeholder="Say something new." id="post-new-input" class="multiline-input" required maxlength="300"></textarea>
+  <button role="submit" id="post-new-submit" class="multiline-submit">Post</button>
 </form>
