@@ -38,7 +38,7 @@ const createThread = async (args: {
   const { rootPostId, postId } = args;
   const threadInsertResult = await sql`
     INSERT INTO threads (
-      root_post_id, roots_upstream_post_ids, depth, post_ids
+      root_post_id, upstream_thread_ids, depth, post_ids
     ) VALUES (
       ${sql`${rootPostId}::uuid`},
       ARRAY[${sql`${rootPostId}::uuid`}],
