@@ -1,6 +1,6 @@
 import User from "../../../models/user";
 import revealElements from "../../../utils/reveal_elements";
-import { hideExistingReplyNew, revealReplyNew,  } from "../reply_new/reply_new";
+import { hideExistingReplyNew, revealReplyNew } from "../reply_new/reply_new";
 
 let user: User|null = null;
 

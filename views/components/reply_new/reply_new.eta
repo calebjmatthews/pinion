@@ -1,5 +1,5 @@
 <div id="reply-new-wrapper" class="display-none">
-  <form class="responsive-container post-new-form">
+  <form class="responsive-container post-new-form" id="reply-new-form">
     <textarea id="reply-new-input" placeholder="Reply to this post." class="multiline-input" required maxlength="300"></textarea>
     <button id="reply-new-submit" role="submit" class="multiline-submit">Go</button>
   </form>

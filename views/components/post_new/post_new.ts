@@ -21,8 +21,17 @@ const postNewSubmitOnClick = async (event: Event) => {
   };
 };
 
+export const postInputOnKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault(); // Prevent newline
+    const formPostNew: HTMLFormElement|null = document.querySelector('#post-new');
+    if (formPostNew) formPostNew.requestSubmit();
+  }
+};
+
 const attach = () => {
   const formPostNew: HTMLFormElement|null = document.querySelector("#post-new");
+  const inputPostNew: HTMLFormElement|null = document.querySelector("#post-new-input");
   const userState: HTMLSpanElement|null = document.querySelector("#state-user");
   try {
     if (userState?.textContent) {
@@ -30,9 +39,10 @@ const attach = () => {
     }
   } catch { };
 
-  if (formPostNew && userState) {
+  if (formPostNew && userState && inputPostNew) {
     if (user) formPostNew.style = "display: flex";
     formPostNew.addEventListener("submit", postNewSubmitOnClick);
+    inputPostNew.addEventListener("keydown", postInputOnKeydown);
   }
   else { setTimeout(() => attach(), 10); };
 };

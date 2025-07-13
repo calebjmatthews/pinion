@@ -33,6 +33,12 @@ export const revealReplyNew = (args: {
 
   postClicked.classList.add('replied-to');
   postClickedWrapper.appendChild(replyNewForm);
+
+  const replyNewInput: HTMLTextAreaElement|null = document.querySelector('#reply-new-input');
+  if (replyNewInput) {
+    replyNewInput.addEventListener("keydown", replyInputOnKeydown);
+    replyNewInput.focus();
+  }
 };
 
 const replySubmitOnClick = async (event: Event) => {
@@ -58,4 +64,12 @@ const replySubmitOnClick = async (event: Event) => {
     });
     if (response.status === 201) window.location.reload();
   };
+};
+
+const replyInputOnKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault(); // Prevent newline
+    const replyNewForm: HTMLFormElement|null = document.querySelector('#reply-new-form');
+    if (replyNewForm) replyNewForm.requestSubmit();
+  }
 };
