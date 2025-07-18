@@ -87,6 +87,12 @@ h1 {
 }
 
 .responsive-container {
+  width: clamp(650px, 80%, 800px);
+  max-width: 100%;
+  padding: 0 16px;
+}
+
+.responsive-container-old {
   width: 100%;
   max-width: 100%;
   padding: 0 16px;
