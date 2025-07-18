@@ -1,6 +1,6 @@
 <header id="page-header">
   <div id="header-wrapper" class="responsive-container">
-    <span><%~ include("../../icons/feather") %>Pinion</span>
+    <span class="site-title"><%~ include("../../icons/feather") %>Pinion</span>
     <nav id="header-nav">
       <a>
         <%~ include("../../icons/magnifying_glass") %>

@@ -55,7 +55,7 @@ const revealSignUp = (args: {
     emailInput.disabled = false;
     passwordInput.disabled = false;
     submitLogin.disabled = false;
-    submitLogin.textContent = "Go";
+    submitLogin.textContent = "Log in or Sign up";
 
     revealElements([noUserExplanation, handleControl, passwordConfirmControl, firstNameControl, lastNameControl]);
     

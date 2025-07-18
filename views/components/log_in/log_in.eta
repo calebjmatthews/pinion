@@ -32,5 +32,5 @@
       </div>
     </div>
   </div>
-  <button role="submit" id="log-in-submit">Go</button>
+  <button role="submit" id="log-in-submit">Log in or Sign up</button>
 </form>

@@ -65,4 +65,5 @@
   flex: 0.5 0 auto;
   min-height: 100%;
   min-width: 100px;
+  width: min-content;
 }
