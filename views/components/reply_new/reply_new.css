@@ -23,6 +23,11 @@
   }
 }
 
+#reply-new-form {
+  width: 100%;
+  padding: 0;
+}
+
 .reply-new-grow {
   animation: reply-new-grow-in 0.6s;
 }
