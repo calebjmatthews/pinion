@@ -6,19 +6,21 @@ import postCreate from "./postCreate";
 const handleReplyNew = async (request: BunRequest) => {
   const requestBody = await request.json();
   console.log(`requestBody`, requestBody);
+  const { body, rootPostId } = requestBody;
   const user = await getUserFromSession(request.cookies);
 
   // ToDo: Handle missing user
   if (!user) return Response.json({ message: "User not found" }, { status: 404 });
 
-  const postCreateResult = await postCreate(request, { bodyAlreadyProcessed: requestBody.body });
+  const postCreateResult = await postCreate(request, { bodyAlreadyProcessed: body });
   const postCreated = await postCreateResult.json();
   const postId = postCreated.id;
 
-  let thread: any = await getExistingThread(requestBody.rootPostId);
+  let thread: any = await getExistingThread(rootPostId);
 
   if (!thread) {
-    thread = await createThread({ rootPostId: requestBody.rootPostId, postId });
+    thread = await createThread({ rootPostId, postId });
+    await updatePostWithThreadData({ rootPostId, threadId: thread.id });
   }
 
   console.log(`thread`, thread);
@@ -48,6 +50,20 @@ const createThread = async (args: {
   `;
   console.log(`threadInsertResult`, threadInsertResult);
   return threadInsertResult[0];
+};
+
+const updatePostWithThreadData = async (args: {
+  rootPostId: string,
+  threadId: string
+}) => {
+  const { rootPostId, threadId } = args;
+  const updatePostWithThreadDataResult = await sql`
+    UPDATE posts
+      SET thread_id = ${sql`${threadId}::uuid`}
+      WHERE id = ${sql`${rootPostId}::uuid`};
+  `;
+  console.log(`updatePostWithThreadDataResult`, updatePostWithThreadDataResult);
+  return updatePostWithThreadDataResult[0];
 };
 
 // const getPostsFromThread = async (postIds: string[]) => {

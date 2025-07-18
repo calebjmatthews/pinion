@@ -6,7 +6,8 @@ import User, { type UserFromDBInterface } from "../models/user";
 
 const postsGet: () => Promise<PostToDisplay[]> = async() => {
   const postsRaw: PostFromDBInterface[] = await sql`
-    SELECT * FROM posts;
+    SELECT * FROM posts
+    ORDER BY created_at DESC;
   `;
   const posts = postsRaw.map((postRaw) => new Post().fromDB(postRaw));
 
