@@ -2,8 +2,8 @@ import { sql, type BunRequest } from "bun";
 
 import getUserFromSession from "./getUserFromSession";
 
-const postCreate = async (request: BunRequest, options?: { bodyAlreadyProcessed: string }) => {
-  const postBody = options?.bodyAlreadyProcessed || await request.json();
+const postCreate = async (request: BunRequest, options?: { body: string, isReply: boolean }) => {
+  const postBody = options?.body || await request.json();
   // const hashtags = extractHashtags(postBody);
   const user = await getUserFromSession(request.cookies);
 
@@ -12,10 +12,11 @@ const postCreate = async (request: BunRequest, options?: { bodyAlreadyProcessed:
 
   const postInsertResult = await sql`
     INSERT INTO posts (
-      user_id, body
+      user_id, body, is_reply
     ) VALUES (
       ${user.id},
-      ${postBody}
+      ${postBody},
+      ${!!options?.isReply}
     ) RETURNING id;
   `;
 

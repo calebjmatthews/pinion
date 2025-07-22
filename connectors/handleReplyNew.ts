@@ -12,7 +12,7 @@ const handleReplyNew = async (request: BunRequest) => {
   // ToDo: Handle missing user
   if (!user) return Response.json({ message: "User not found" }, { status: 404 });
 
-  const postCreateResult = await postCreate(request, { bodyAlreadyProcessed: body });
+  const postCreateResult = await postCreate(request, { body, isReply: true });
   const postCreated = await postCreateResult.json();
   const postId = postCreated.id;
 
@@ -40,10 +40,9 @@ const createThread = async (args: {
   const { rootPostId, postId } = args;
   const threadInsertResult = await sql`
     INSERT INTO threads (
-      root_post_id, upstream_thread_ids, depth, post_ids
+      root_post_id, depth, post_ids
     ) VALUES (
       ${sql`${rootPostId}::uuid`},
-      ARRAY[${sql`${rootPostId}::uuid`}],
       1,
       ARRAY[${sql`${postId}::uuid`}]
     ) RETURNING *;
@@ -56,10 +55,10 @@ const updatePostWithThreadData = async (args: {
   rootPostId: string,
   threadId: string
 }) => {
-  const { rootPostId, threadId } = args;
+  const { rootPostId } = args;
   const updatePostWithThreadDataResult = await sql`
     UPDATE posts
-      SET thread_id = ${sql`${threadId}::uuid`}
+      SET is_root = true
       WHERE id = ${sql`${rootPostId}::uuid`};
   `;
   console.log(`updatePostWithThreadDataResult`, updatePostWithThreadDataResult);
