@@ -20,24 +20,22 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
     SELECT * FROM threads
     WHERE root_post_id = ANY(ARRAY[${sql`${postIds}::uuid`}]);
   `;
-  console.log(`threadsFromDB`, threadsFromDB);
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
   
   let postRepliesFromDB : PostFromDBInterface[] = [];
   if (postReplyIds.length > 0) {
+    const postReplyIdsLiteral = `{${postReplyIds.join()}}`;
     postRepliesFromDB = await sql`
       SELECT * FROM posts
-      WHERE id = ANY(ARRAY[${sql`${postReplyIds}::uuid`}])
+      WHERE id = ANY(${postReplyIdsLiteral}::uuid[])
       ORDER BY created_at DESC;
     `;
   };
-  console.log(`postRepliesFromDB`, postRepliesFromDB);
   const postReplyMap: { [id: string] : Post } = {};
   postRepliesFromDB.forEach((postReplyFromDB) => {
     postReplyMap[postReplyFromDB.id] = new Post().fromDB(postReplyFromDB);
   });
-  console.log(`postReplyMap`, postReplyMap);
 
   const threadsByPostId: { [id: string] : Thread } = {};
   threads.forEach((thread) => threadsByPostId[thread.rootPostId] = thread);
@@ -50,7 +48,6 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
       post.thread = threadsByPostId[post.id];
     }
   });
-  console.log(`posts`, posts);
 
   const usersFromDB = await sql`
     SELECT
