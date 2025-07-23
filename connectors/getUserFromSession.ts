@@ -28,12 +28,12 @@ const getUserFromSession = async (requestCookies: CookieMap) => {
 
 const handleSessionMatchSuccess = async (args: { user_id: string, session_id: string }) => {
   const { user_id, session_id } = args;
-  const usersRaw = await sqlMiddleware(sql`
+  const usersFromDB = await sqlMiddleware(sql`
     SELECT
       id, handle, first_name, last_name, custom_name, image_id
     FROM users WHERE id=${user_id};
-  `, 'usersRaw', { user_id });
-  if (usersRaw[0].id && session_id) {
+  `, 'usersFromDB', { user_id });
+  if (usersFromDB[0].id && session_id) {
     const sessionIdHashed = bcrypt.hashSync(session_id, 11);
     await sqlMiddleware(sql`
       UPDATE sessions 
@@ -41,7 +41,7 @@ const handleSessionMatchSuccess = async (args: { user_id: string, session_id: st
         expires_at = now() + make_interval(secs => 86400)
       WHERE id = ${sessionIdHashed};
     `, 'refreshSession', { sessionIdHashed });
-    return new User().fromDB(usersRaw[0]);
+    return new User().fromDB(usersFromDB[0]);
     // ToDo: Hanldle refresh session failure, set last_logged_in for user
   }
 };

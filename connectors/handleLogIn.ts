@@ -7,12 +7,12 @@ import sqlMiddleware from "../utils/sql_middleware";
 const handleLogIn = async (request: BunRequest) => {
   const requestBody = await request.json();
   const { email, handle } = requestBody;
-  const usersRaw = await sqlMiddleware(sql`
+  const usersFromDB = await sqlMiddleware(sql`
     SELECT
       id, created_at, last_logged_in, handle, email, password, first_name, last_name, custom_name, bio, image_id
     FROM users WHERE email = ${requestBody.email} OR handle = ${requestBody.handle};
-  `, "usersRaw", { email, handle });
-  const user = usersRaw[0] && new User().fromDB(usersRaw[0]);
+  `, "usersFromDB", { email, handle });
+  const user = usersFromDB[0] && new User().fromDB(usersFromDB[0]);
   if (user) {
     const passwordMatches = bcrypt.compareSync(requestBody.password, user.password);
     if (passwordMatches) {
