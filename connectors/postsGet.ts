@@ -58,7 +58,8 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   const userMap: { [id: string] : User } = {};
   usersFromDB.forEach((userFromDB: UserFromDBInterface) => userMap[userFromDB.id || ''] = new User().fromDB(userFromDB) );
 
-  return posts.map((post) => new PostToDisplay().fromPost({ post, userMap }));
+  return posts.map((post) => new PostToDisplay().fromPost({ post, userMap }))
+  .filter((postToDisplay) => !!postToDisplay);
 };
 
 export default postsGet;
