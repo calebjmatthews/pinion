@@ -4,33 +4,34 @@ import Post, { type PostFromDBInterface } from "../models/post";
 import PostToDisplay from "../models/post_to_display";
 import User, { type UserFromDBInterface } from "../models/user";
 import Thread, { type ThreadFromDBInterface } from '../models/thread';
+import sqlMiddleware from '../utils/sql_middleware';
 
 const postsGet: () => Promise<PostToDisplay[]> = async() => {
-  const postsFromDB: PostFromDBInterface[] = await sql`
+  const postsFromDB: PostFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM posts
     WHERE is_reply IS false
     ORDER BY created_at DESC;
-  `;
+  `, 'postsFromDB');
   const posts = postsFromDB.map((postFromDB) => new Post().fromDB(postFromDB));
 
   if (posts.length === 0) return [];
 
   const postIds = posts.map((post) => post.id);
-  const threadsFromDB: ThreadFromDBInterface[] = await sql`
+  const threadsFromDB: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
     WHERE root_post_id = ANY(ARRAY[${sql`${postIds}::uuid`}]);
-  `;
+  `, 'threadsFromDB', { postIds });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
   
   let postRepliesFromDB : PostFromDBInterface[] = [];
   if (postReplyIds.length > 0) {
     const postReplyIdsLiteral = `{${postReplyIds.join()}}`;
-    postRepliesFromDB = await sql`
+    postRepliesFromDB = await sqlMiddleware(sql`
       SELECT * FROM posts
       WHERE id = ANY(${postReplyIdsLiteral}::uuid[])
       ORDER BY created_at DESC;
-    `;
+    `, 'postRepliesFromDB', { postReplyIdsLiteral });
   };
   const postReplyMap: { [id: string] : Post } = {};
   postRepliesFromDB.forEach((postReplyFromDB) => {
@@ -49,11 +50,11 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
     }
   });
 
-  const usersFromDB = await sql`
+  const usersFromDB = await sqlMiddleware(sql`
     SELECT
       id, handle, first_name, last_name, custom_name, image_id
     FROM users;
-  `;
+  `, 'usersFromDB');
   const userMap: { [id: string] : User } = {};
   usersFromDB.forEach((userFromDB: UserFromDBInterface) => userMap[userFromDB.id || ''] = new User().fromDB(userFromDB) );
 

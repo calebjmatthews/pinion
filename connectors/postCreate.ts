@@ -1,6 +1,7 @@
 import { sql, type BunRequest } from "bun";
 
 import getUserFromSession from "./getUserFromSession";
+import sqlMiddleware from "../utils/sql_middleware";
 
 const postCreate = async (request: BunRequest, options?: { body: string, isReply: boolean }) => {
   const postBody = options?.body || await request.json();
@@ -10,7 +11,7 @@ const postCreate = async (request: BunRequest, options?: { body: string, isReply
   // ToDo: Handle missing user
   if (!user) return Response.json({ message: "User not found" }, { status: 404 });
 
-  const postInsertResult = await sql`
+  const postInsertResult = await sqlMiddleware(sql`
     INSERT INTO posts (
       user_id, body, is_reply
     ) VALUES (
@@ -18,7 +19,7 @@ const postCreate = async (request: BunRequest, options?: { body: string, isReply
       ${postBody},
       ${!!options?.isReply}
     ) RETURNING id;
-  `;
+  `, "postInsert", { "user.id": user.id, postBody, "!!options?.isReply": !!options?.isReply });
 
   // ToDo: Handle error in postInsert SQL
   return Response.json({ id: postInsertResult[0].id }, { status: 201 });

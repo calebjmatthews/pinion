@@ -2,14 +2,16 @@ import { sql, type BunRequest } from "bun";
 import bcrypt from "bcrypt";
 
 import User from "../models/user";
+import sqlMiddleware from "../utils/sql_middleware";
 
 const handleLogIn = async (request: BunRequest) => {
   const requestBody = await request.json();
-  const usersRaw = await sql`
+  const { email, handle } = requestBody;
+  const usersRaw = await sqlMiddleware(sql`
     SELECT
       id, created_at, last_logged_in, handle, email, password, first_name, last_name, custom_name, bio, image_id
     FROM users WHERE email = ${requestBody.email} OR handle = ${requestBody.handle};
-  `;
+  `, "usersRaw", { email, handle });
   const user = usersRaw[0] && new User().fromDB(usersRaw[0]);
   if (user) {
     const passwordMatches = bcrypt.compareSync(requestBody.password, user.password);
@@ -31,23 +33,21 @@ const logInSuccess = async (args: { request: BunRequest, user: User }) => {
   const { request, user } = args;
   delete user.password;
 
-  const clearSessionsResult = await sql`
+  await sqlMiddleware(sql`
     DELETE FROM sessions WHERE user_id = ${user.id};
-  `;
+  `, "clearSessions", { "user.id": user.id });
   // ToDo: Handle error in deleting existing sessions
-  console.log(`clearSessionsResult`, clearSessionsResult);
 
   const sessionId = crypto.randomUUID();
   const sessionIdHashed = bcrypt.hashSync(sessionId, 11);
-  const sessionResult = await sql`
+  await sqlMiddleware(sql`
     INSERT INTO sessions (
       id, user_id
     ) VALUES (
       ${sessionIdHashed},
       ${user.id}
     ) RETURNING id;
-  `;
-  console.log(`sessionResult`, sessionResult);
+  `, "insertSession", { sessionIdHashed, "user.id": user.id });
   // ToDo: Handle error in creating new session
   const cookieOptions = { httpOnly: true, secure: true, maxAge: 86400 };
   request.cookies.set("session_id", sessionId, cookieOptions);

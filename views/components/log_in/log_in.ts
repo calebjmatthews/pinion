@@ -27,7 +27,6 @@ const logInClick = async () => {
       method: "POST",
       body: JSON.stringify(logInBody)
     });
-    console.log(`response`, response);
     if (response.status === 202) window.location.reload();
     else if (response.status === 204) revealSignUp({ emailInput, passwordInput, submitLogin });
   };
@@ -105,12 +104,10 @@ const signUpClick = async () => {
       firstName: firstNameHandleInput.value,
       lastName: lastNameHandleInput.value
     };
-    console.log(`singUpBody:`, signUpBody);
     const response = await fetch("/sign_up", {
       method: "POST",
       body: JSON.stringify(signUpBody)
     });
-    console.log(`response`, response);
     if (response.status === 202) window.location.reload();
   };
 };

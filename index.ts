@@ -45,7 +45,6 @@ const server = Bun.serve({
 
     "/": async (request: BunRequest) => {
       const user = await getUserFromSession(request.cookies);
-      console.log(`user`, user);
       const posts = await postsGet();
       return new Response(
         eta.render("./pages/index", { title: "Pinion", posts, user }), 

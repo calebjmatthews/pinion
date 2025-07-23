@@ -3,10 +3,10 @@ import { sql, type BunRequest } from "bun";
 import Thread, { type ThreadFromDBInterface } from "../models/thread";
 import getUserFromSession from "./getUserFromSession";
 import postCreate from "./postCreate";
+import sqlMiddleware from "../utils/sql_middleware";
 
 const handleReplyNew = async (request: BunRequest) => {
   const requestBody = await request.json();
-  console.log(`requestBody`, requestBody);
   const { body, rootPostId } = requestBody;
   const user = await getUserFromSession(request.cookies);
 
@@ -28,17 +28,16 @@ const handleReplyNew = async (request: BunRequest) => {
   };
 
   const thread = new Thread().fromDB(threadFromDb);
-  console.log(`thread`, thread);
   
   // ToDo: Handle error in postInsert SQL
   return Response.json({ id: thread?.id }, { status: 201 });
 };
 
 const getExistingThread = async (rootPostId: string) => {
-  const existingThreads = await sql`
+  const existingThreads = await sqlMiddleware(sql`
     SELECT * FROM threads
     WHERE root_post_id = ${sql`${rootPostId}::uuid`};
-  `;
+  `, "existingThreads", { rootPostId });
   return existingThreads[0];
 };
 
@@ -47,7 +46,7 @@ const createThread = async (args: {
   postId: string
 }): Promise<ThreadFromDBInterface> => {
   const { rootPostId, postId } = args;
-  const threadInsertResult = await sql`
+  const threadInsertResult = await sqlMiddleware(sql`
     INSERT INTO threads (
       root_post_id, depth, post_ids
     ) VALUES (
@@ -55,8 +54,7 @@ const createThread = async (args: {
       1,
       ARRAY[${sql`${postId}::uuid`}]
     ) RETURNING *;
-  `;
-  console.log(`threadInsertResult`, threadInsertResult);
+  `, "threadInsert", { rootPostId, postId });
   return threadInsertResult[0];
 };
 
@@ -65,12 +63,11 @@ const updatePostWithThreadData = async (args: {
   threadId: string
 }) => {
   const { rootPostId } = args;
-  const updatePostWithThreadDataResult = await sql`
+  const updatePostWithThreadDataResult = await sqlMiddleware(sql`
     UPDATE posts
     SET is_root = true
     WHERE id = ${sql`${rootPostId}::uuid`};
-  `;
-  console.log(`updatePostWithThreadDataResult`, updatePostWithThreadDataResult);
+  `, "updatePostWithThreadData", { rootPostId });
   return updatePostWithThreadDataResult;
 };
 
@@ -79,13 +76,11 @@ const updateThreadWithPostData = async (args: {
   postId: string
 }) => {
   const { threadId, postId } = args;
-  console.log(`Before updateThreadWithPostData`);
-  const updateThreadWithPostDataResult = await sql`
+  const updateThreadWithPostDataResult = await sqlMiddleware(sql`
     UPDATE threads
     SET post_ids = ARRAY_APPEND(post_ids, ${sql`${postId}::uuid`})
     WHERE id = ${sql`${threadId}::uuid`};
-  `;
-  console.log(`updateThreadWithPostDataResult`, updateThreadWithPostDataResult);
+  `, "updateThreadWithPost", { postId, threadId });
   return updateThreadWithPostDataResult;
 }
 
