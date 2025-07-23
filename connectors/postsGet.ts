@@ -16,11 +16,11 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
 
   if (posts.length === 0) return [];
 
-  const postIds = posts.map((post) => post.id);
+  const postIdsLiteral = `{${posts.map((post) => post.id).join()}}`;
   const threadsFromDB: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
-    WHERE root_post_id = ANY(ARRAY[${sql`${postIds}::uuid`}]);
-  `, 'threadsFromDB', { postIds });
+    WHERE root_post_id = ANY(${postIdsLiteral}::uuid[]);
+  `, 'threadsFromDB', { postIdsLiteral });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
   

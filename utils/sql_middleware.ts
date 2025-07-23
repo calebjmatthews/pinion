@@ -9,9 +9,9 @@ const sqlMiddleware = async (query: Bun.SQLQuery, name: string, args?: any) => {
     return result;
   }
   catch(err) {
-    console.log(`${logDatetime()}: Error during SQL query execution.`);
-    console.log(`Error:`, err);
-    console.log(`Erroring query ${name} with args ${args ? JSON.stringify(args) : 'empty'}.`);
+    console.error(`${logDatetime()}: Error during SQL query execution.`);
+    console.error(`Error:`, err);
+    console.error(`Erroring query ${name} with args ${args ? JSON.stringify(args) : 'empty'}.`);
     return [];
   };
 };
