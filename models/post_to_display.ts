@@ -1,3 +1,6 @@
+import Post from "./post";
+import User from "./user";
+
 export default class PostToDisplay {
   id: string = '';
   userId: string = '';
@@ -6,11 +9,40 @@ export default class PostToDisplay {
   createdAt: Date = new Date();
   createdAtLabel: string = '';
   body: string = '';
+  thread?: ThreadToDisplay;
 
-  constructor(postToDisplay: PostToDisplayInterface, options?: { locale?: string }) {
-    Object.assign(this, postToDisplay);
+  constructor(postToDisplay?: PostToDisplayInterface, options?: { locale?: string }) {
+    if (postToDisplay) {
+      Object.assign(this, postToDisplay);
 
-    this.createdAtLabel = getCreatedAtLabel({ date: this.createdAt, locale: options?.locale });
+      this.createdAtLabel = getCreatedAtLabel({ date: this.createdAt, locale: options?.locale });
+    };
+  };
+
+  fromPost(args: { post: Post, userMap: { [userId: string] : User } }): PostToDisplay|undefined {
+    const { post, userMap } = args;
+    const { id, userId, createdAt, body, thread } = post;
+    const user = userMap[userId];
+    if (!user) return;
+
+    let threadToDisplay: ThreadToDisplay|undefined = undefined;
+    if (thread?.posts) {
+      threadToDisplay = { ...thread, posts: 
+        thread.posts.map((threadPost) => (
+          new PostToDisplay().fromPost({ post: threadPost, userMap }))
+        ).filter((threadPost) => !!threadPost)
+      };
+    };
+  
+    return new PostToDisplay({
+      id,
+      userId,
+      userName: user.getName(),
+      userThumbnail: user.imageId,
+      createdAt,
+      body,
+      thread: threadToDisplay
+    });
   };
 };
 
@@ -31,4 +63,9 @@ interface PostToDisplayInterface {
   createdAt: Date;
   createdAtLabel?: string;
   body: string;
+  thread?: ThreadToDisplay;
 };
+
+interface ThreadToDisplay {
+  posts: PostToDisplay[]
+}
