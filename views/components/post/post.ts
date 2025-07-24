@@ -15,7 +15,7 @@ const replyClick = async (event: Event) => {
   if (!replyNewForm || !postClicked || !postClickedWrapper) return;
 
   await hideExistingReplyNew({ lastPostClicked, replyNewForm });
-  revealReplyNew({ replyNewForm, postClicked, postClickedWrapper });
+  revealReplyNew({ replyNewForm, postClicked });
 };
 
 const postsOnLoad = () => {

@@ -21,10 +21,9 @@ export const hideExistingReplyNew = async (args: {
 
 export const revealReplyNew = (args: {
   replyNewForm: HTMLFormElement,
-  postClicked: HTMLElement,
-  postClickedWrapper: HTMLElement
+  postClicked: HTMLElement
 }) => {
-  const { replyNewForm, postClicked, postClickedWrapper } = args;
+  const { replyNewForm, postClicked } = args;
 
   revealElements([replyNewForm]);
   replyNewForm.classList.remove('reply-new-shrink');
@@ -32,7 +31,7 @@ export const revealReplyNew = (args: {
   replyNewForm.addEventListener("submit", replySubmitOnClick);
 
   postClicked.classList.add('replied-to');
-  postClickedWrapper.appendChild(replyNewForm);
+  postClicked.after(replyNewForm);
 
   const replyNewInput: HTMLTextAreaElement|null = document.querySelector('#reply-new-input');
   if (replyNewInput) {
