@@ -1,21 +1,31 @@
 <section class="post-wrapper">
-  <article id="post-<%= it.post.id %>" class="post">
-    <header class="post-header">
-      <h3 class="post-user">
-        <%= it.post.userName %>
-      </h3>
-    </header>
-    <p class="post-body">
-      <%= it.post.body %>
-    </p>
-    <footer>
-      <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
-        <%= it.post.createdAtLabel %>
-      </time>
-      <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button display-none">
-        <%~ include("../../icons/reply") %>
-        Reply
-      </button>
-    </footer>
-  </article>
+  <% if (it.post.thread?.posts.length > 0) { %>
+    <button class="post-toggle">-</button>
+  <% } %>
+  <div class="post-inner-wrapper">
+    <article id="post-<%= it.post.id %>" class="post ">
+      <header class="post-header">
+        <h3 class="post-user">
+          <%= it.post.userName %>
+        </h3>
+      </header>
+      <p class="post-body">
+        <%= it.post.body %>
+      </p>
+      <footer>
+        <time datetime="<%= it.post.createdAt %>" class="post-created-at" >
+          <%= it.post.createdAtLabel %>
+        </time>
+        <button id="post-reply-button-<%= it.post.id %>" class="post-reply-button display-none">
+          <%~ include("../../icons/reply") %>
+          Reply
+        </button>
+      </footer>
+    </article>
+    <% if (it.post.thread?.posts.length > 0) { %>
+      <% it.post.thread.posts.forEach((threadPost) => { %>
+        <%~ include("./post", { post: threadPost, depth: it.depth+1 }) %>
+      <% }) %>
+    <% } %>
+  </div>
 </section>

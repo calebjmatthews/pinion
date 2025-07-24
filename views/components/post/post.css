@@ -1,9 +1,22 @@
 .post-wrapper {
+  display: flex;
   border-radius: 16px;
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
 }
 
+.post-toggle {
+  width: 16px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-right-width: 0;
+}
+
+.post-inner-wrapper {
+  flex: 1;
+}
+
 .post {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;

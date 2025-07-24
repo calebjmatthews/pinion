@@ -1,7 +1,7 @@
 <section class="post-list responsive-container">
   <h1>Posts</h1>
   <% it.posts.forEach((post) => { %>
-    <%~ include("../post/post", { post }) %>
+    <%~ include("../post/post", { post, depth: 0 }) %>
   <% }) %>
   <%~ include("../reply_new/reply_new") %>
 </section>

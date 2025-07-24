@@ -27,7 +27,7 @@ export default class PostToDisplay {
 
     let threadToDisplay: ThreadToDisplay|undefined = undefined;
     if (thread?.posts) {
-      threadToDisplay = { ...thread, posts: 
+      threadToDisplay = { posts: 
         thread.posts.map((threadPost) => (
           new PostToDisplay().fromPost({ post: threadPost, userMap }))
         ).filter((threadPost) => !!threadPost)
