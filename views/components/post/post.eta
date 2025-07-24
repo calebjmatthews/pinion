@@ -1,7 +1,5 @@
 <section class="post-wrapper">
-  <% if (it.post.thread?.posts.length > 0) { %>
-    <button class="post-toggle">-</button>
-  <% } %>
+  <button class="post-toggle">-</button>
   <div class="post-inner-wrapper">
     <article id="post-<%= it.post.id %>" class="post ">
       <header class="post-header">

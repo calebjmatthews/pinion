@@ -1,13 +1,13 @@
 .post-wrapper {
   display: flex;
-  border-radius: 16px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
 }
 
 .post-toggle {
   width: 16px;
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   border-right-width: 0;
 }
 
@@ -22,7 +22,9 @@
   gap: 8px;
   padding: 16px;
   border: 1px solid #777;
-  border-radius: 16px;
+  border-radius: 8px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   background: #fdfcff;
   
   header {
