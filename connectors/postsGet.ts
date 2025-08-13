@@ -17,12 +17,15 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   if (posts.length === 0) return [];
 
   const postIdsLiteral = `{${posts.map((post) => post.id).join()}}`;
+  console.log(`postIdsLiteral`, postIdsLiteral);
   const threadsFromDB: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
     WHERE root_post_id = ANY(${postIdsLiteral}::uuid[]);
   `, 'threadsFromDB', { postIdsLiteral });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
+  console.log(`threads`, threads);
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
+  console.log(`postReplyIds`, postReplyIds);
   
   let postRepliesFromDB : PostFromDBInterface[] = [];
   if (postReplyIds.length > 0) {
@@ -58,9 +61,6 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   const userMap: { [id: string] : User } = {};
   usersFromDB.forEach((userFromDB: UserFromDBInterface) => userMap[userFromDB.id || ''] = new User().fromDB(userFromDB) );
 
-  console.log(`posts.map((post) => new PostToDisplay().fromPost({ post, userMap }))
-  .filter((postToDisplay) => !!postToDisplay)`, posts.map((post) => new PostToDisplay().fromPost({ post, userMap }))
-  .filter((postToDisplay) => !!postToDisplay));
   return posts.map((post) => new PostToDisplay().fromPost({ post, userMap }))
   .filter((postToDisplay) => !!postToDisplay);
 };

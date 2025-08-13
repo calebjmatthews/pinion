@@ -17,58 +17,107 @@ const handleReplyNew = async (request: BunRequest) => {
   const postCreated = await postCreateResult.json();
   const postId = postCreated.id;
 
-  let threadFromDb: ThreadFromDBInterface|null = await getExistingThread(rootPostId);
+  let { threadFromDb, origin } = await getExistingThread(rootPostId);
+  let thread: Thread|null = null;
+  if (threadFromDb) { thread = new Thread().fromDB(threadFromDb) }
 
+  // If no thread exists, create a new one and update the post's `is_root` field
   if (!threadFromDb) {
-    threadFromDb = await createThread({ rootPostId, postId });
-    await updatePostWithThreadData({ rootPostId, threadId: threadFromDb.id });
+    thread = await createThread({ rootPostId, postId });
+    if (thread) {
+      await updatePostAsRoot(rootPostId);
+    };
+  }
+  // If a thread exists and the post being responded to is its root, update the thread with the posts data
+  else if (thread && origin === "fromRoot") {
+    await updateThreadWithPostData({ threadId: thread.id, postId });
+  }
+  // If a parent thread exists, but not one for the post being responded to, do the following: fetch all ancestor threads, create a new thread, update the post's `is_root` field, and update ancestor threads with new thread id.
+  else if (thread && origin === "fromReply") {
+    const parentThread = new Thread(thread);
+    const ancestorThreads = await getAncestorThreads(thread);
+    thread = await createThread({ rootPostId, postId, parentThread });
+    if (thread) {
+      await Promise.all([
+        updatePostAsRoot(rootPostId),
+        updateAncestorThreadsWithThreadData({ ancestorThreads, thread })
+      ]);
+    };
   }
   else {
-    await updateThreadWithPostData({ threadId: threadFromDb.id, postId })
-  };
-
-  const thread = new Thread().fromDB(threadFromDb);
+    console.log(`Unexpected origin and thread combination, origin: ${origin}, thread: `, thread);
+  }
   
   // ToDo: Handle error in postInsert SQL
   return Response.json({ id: thread?.id }, { status: 201 });
 };
 
-const getExistingThread = async (rootPostId: string) => {
+const getExistingThread = async (postId: string):
+  Promise<{ threadFromDb: ThreadFromDBInterface|null, origin: "fromRoot"|"fromReply"|null }> => (
+  Promise.all([
+    getExistingThreadFromRoot(postId),
+    getExistingThreadFromReply(postId)
+  ]).then(([existingThreadFromRoot, existingThreadFromReply]) => {
+    if (existingThreadFromRoot) return { threadFromDb: existingThreadFromRoot, origin: "fromRoot" };
+    if (existingThreadFromReply) return { threadFromDb: existingThreadFromReply, origin: "fromReply" };
+    return { threadFromDb: null, origin: null };
+  })
+);
+
+const getExistingThreadFromRoot = async (rootPostId: string) => {
   const existingThreads = await sqlMiddleware(sql`
     SELECT * FROM threads
     WHERE root_post_id = ${sql`${rootPostId}::uuid`};
-  `, "existingThreads", { rootPostId });
+  `, "existingThreadFromRoot", { rootPostId });
   return existingThreads[0];
+};
+
+const getExistingThreadFromReply = async (postId: string) => {
+  const existingThreads = await sqlMiddleware(sql`
+    SELECT * FROM threads
+    WHERE ${sql`${postId}::uuid`} = ANY(post_ids);
+  `, "existingThreadFromReply", { postId });
+  return existingThreads[0];
+};
+
+const getAncestorThreads = async (thread: Thread) => {
+  const ancestorThreads = await sqlMiddleware(sql`
+    SELECT * FROM threads
+    WHERE id = ANY(ARRAY[${sql`${thread.ancestorThreadIds}::uuid`}]);
+  `, "ancestorThreads", { ancestorThreadIds: thread.ancestorThreadIds });
+  return ancestorThreads;
 };
 
 const createThread = async (args: {
   rootPostId: string,
-  postId: string
-}): Promise<ThreadFromDBInterface> => {
-  const { rootPostId, postId } = args;
+  postId: string,
+  parentThread?: Thread
+}): Promise<Thread|null> => {
+  const { rootPostId, postId, parentThread } = args;
   const threadInsertResult = await sqlMiddleware(sql`
     INSERT INTO threads (
-      root_post_id, depth, post_ids
+      root_post_id, post_ids, depth, ancestor_thread_ids
     ) VALUES (
       ${sql`${rootPostId}::uuid`},
-      1,
-      ARRAY[${sql`${postId}::uuid`}]
-    ) RETURNING *;
-  `, "threadInsert", { rootPostId, postId });
-  return threadInsertResult[0];
+      ${sql`ARRAY[${postId}::uuid]`},
+      ${(parentThread?.depth || 0) + 1},
+      ${parentThread
+        ? sql`ARRAY[${[...(parentThread.ancestorThreadIds || []), parentThread.id]}::uuid]`
+        : undefined}
+    )
+    RETURNING *;
+  `, "threadInsert", { rootPostId, postId, parentThread });
+  if (threadInsertResult[0]) return new Thread().fromDB(threadInsertResult[0])
+  return null;
 };
 
-const updatePostWithThreadData = async (args: {
-  rootPostId: string,
-  threadId: string
-}) => {
-  const { rootPostId } = args;
-  const updatePostWithThreadDataResult = await sqlMiddleware(sql`
+const updatePostAsRoot = async (rootPostId: string) => {
+  const updatePostAsRootResult = await sqlMiddleware(sql`
     UPDATE posts
     SET is_root = true
     WHERE id = ${sql`${rootPostId}::uuid`};
-  `, "updatePostWithThreadData", { rootPostId });
-  return updatePostWithThreadDataResult;
+  `, "updatePostAsRoot", { rootPostId });
+  return updatePostAsRootResult;
 };
 
 const updateThreadWithPostData = async (args: {
@@ -82,7 +131,23 @@ const updateThreadWithPostData = async (args: {
     WHERE id = ${sql`${threadId}::uuid`};
   `, "updateThreadWithPost", { postId, threadId });
   return updateThreadWithPostDataResult;
-}
+};
+
+const updateAncestorThreadsWithThreadData = async (args: {
+  ancestorThreads: Thread[],
+  thread: Thread
+}) => {
+  const { ancestorThreads, thread } = args;
+  if ((ancestorThreads || []).length === 0) return null;
+  
+  const updateAncestorThreadsWithThreadDataResult = await sqlMiddleware(sql`
+    UPDATE threads
+    SET descendent_thread_ids = ARRAY_APPEND(descendent_thread_ids, ${sql`${thread.id}::uuid`})
+    WHERE id = ANY(ARRAY[${sql`${ancestorThreads.map((t) => t.id)}::uuid`}]);
+  `, "updateAncestorThreadsWithThreadData", { ancestorThreads, thread });
+
+  return updateAncestorThreadsWithThreadDataResult
+};
 
 // const getPostsFromThread = async (postIds: string[]) => {
   
