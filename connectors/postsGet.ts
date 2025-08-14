@@ -12,7 +12,7 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
     WHERE is_reply IS false
     ORDER BY created_at DESC;
   `, 'postsFromDB');
-  const posts = postsFromDB.map((postFromDB) => new Post().fromDB(postFromDB));
+  let posts = postsFromDB.map((postFromDB) => new Post().fromDB(postFromDB));
 
   if (posts.length === 0) return [];
 
@@ -24,6 +24,17 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   `, 'threadsFromDB', { postIdsLiteral });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
   console.log(`threads`, threads);
+
+  const threadsDescendingIdsLiteral = `{${threads.map((thread) => thread.descendentThreadIds).join()}}`;
+  console.log(`threadsDescendingIdsLiteral`, threadsDescendingIdsLiteral);
+  const threadsDescending: ThreadFromDBInterface[] = await sqlMiddleware(sql`
+    SELECT * FROM threads
+    WHERE id = ANY(${threadsDescendingIdsLiteral}::uuid[]);
+  `, 'threadsDescending', { threadsDescendingIdsLiteral });
+  console.log(`threadsDescending`, threadsDescending);
+  threadsDescending.forEach((threadFromDB) => threads.push(new Thread().fromDB(threadFromDB)));
+  console.log(`threads`, threads);
+
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
   console.log(`postReplyIds`, postReplyIds);
   
@@ -43,15 +54,10 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
 
   const threadsByPostId: { [id: string] : Thread } = {};
   threads.forEach((thread) => threadsByPostId[thread.rootPostId] = thread);
-  posts.forEach((post) => {
-    const thread = threadsByPostId[post.id];
-    if (thread) {
-      thread.posts = (thread.postIds || [])
-        .map((postId) => postReplyMap[postId])
-        .filter((post) => !!post);
-      post.thread = threadsByPostId[post.id];
-    }
-  });
+  posts = posts.map((post) => (
+    addThreadToPost({ post, threadsByPostId, postReplyMap })
+  ));
+  console.log(`posts`, posts);
 
   const usersFromDB = await sqlMiddleware(sql`
     SELECT
@@ -63,6 +69,32 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
 
   return posts.map((post) => new PostToDisplay().fromPost({ post, userMap }))
   .filter((postToDisplay) => !!postToDisplay);
+};
+
+const addThreadToPost = (args: {
+  post: Post,
+  threadsByPostId: { [id: string] : Thread },
+  postReplyMap: { [id: string] : Post }
+}) => {
+  const { post, threadsByPostId, postReplyMap } = args;
+
+  const thread = threadsByPostId[post.id];
+  if (thread) {
+    const postReplies: Post[] = [];
+    thread.postIds.forEach((postId) => {
+      let postReply = postReplyMap[postId];
+      if (postReply) {
+        if (threadsByPostId[postId]) {
+          postReply = addThreadToPost({ ...args, post: postReply });
+        }
+        postReplies.push(postReply);
+      }
+    });
+    thread.posts = postReplies;
+    console.log(`thread`, thread);
+  }
+  else { return post; };
+  return new Post({ ...post, thread });
 };
 
 export default postsGet;

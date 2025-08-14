@@ -32,6 +32,7 @@ interface PostInterface {
   body: string;
   isRoot: boolean;
   isReply: boolean;
+  thread?: Thread;
 };
 
 export interface PostFromDBInterface {

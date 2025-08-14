@@ -4,6 +4,7 @@ import Thread, { type ThreadFromDBInterface } from "../models/thread";
 import getUserFromSession from "./getUserFromSession";
 import postCreate from "./postCreate";
 import sqlMiddleware from "../utils/sql_middleware";
+import toUuidArrayLiteral from "../utils/to_uuid_array_literal";
 
 const handleReplyNew = async (request: BunRequest) => {
   const requestBody = await request.json();
@@ -35,7 +36,8 @@ const handleReplyNew = async (request: BunRequest) => {
   // If a parent thread exists, but not one for the post being responded to, do the following: fetch all ancestor threads, create a new thread, update the post's `is_root` field, and update ancestor threads with new thread id.
   else if (thread && origin === "fromReply") {
     const parentThread = new Thread(thread);
-    const ancestorThreads = await getAncestorThreads(thread);
+    const parentAncestorThreads = await getAncestorThreads(thread);
+    const ancestorThreads = [parentThread, ...(parentAncestorThreads || [])];
     thread = await createThread({ rootPostId, postId, parentThread });
     if (thread) {
       await Promise.all([
@@ -81,9 +83,10 @@ const getExistingThreadFromReply = async (postId: string) => {
 };
 
 const getAncestorThreads = async (thread: Thread) => {
+  if ((thread.ancestorThreadIds || []).length === 0) return [];
   const ancestorThreads = await sqlMiddleware(sql`
     SELECT * FROM threads
-    WHERE id = ANY(ARRAY[${sql`${thread.ancestorThreadIds}::uuid`}]);
+    WHERE id = ANY(${toUuidArrayLiteral(thread.ancestorThreadIds)});
   `, "ancestorThreads", { ancestorThreadIds: thread.ancestorThreadIds });
   return ancestorThreads;
 };
@@ -94,16 +97,22 @@ const createThread = async (args: {
   parentThread?: Thread
 }): Promise<Thread|null> => {
   const { rootPostId, postId, parentThread } = args;
+  
+  
+  const ancestorThreadIds = parentThread
+    ? [...(parentThread.ancestorThreadIds || []), parentThread.id]
+    : null;
+  
   const threadInsertResult = await sqlMiddleware(sql`
     INSERT INTO threads (
       root_post_id, post_ids, depth, ancestor_thread_ids
     ) VALUES (
       ${sql`${rootPostId}::uuid`},
-      ${sql`ARRAY[${postId}::uuid]`},
+      ${toUuidArrayLiteral([postId])},
       ${(parentThread?.depth || 0) + 1},
-      ${parentThread
-        ? sql`ARRAY[${[...(parentThread.ancestorThreadIds || []), parentThread.id]}::uuid]`
-        : undefined}
+      ${ancestorThreadIds
+        ? toUuidArrayLiteral(ancestorThreadIds)
+        : "NULL"}
     )
     RETURNING *;
   `, "threadInsert", { rootPostId, postId, parentThread });
@@ -143,14 +152,10 @@ const updateAncestorThreadsWithThreadData = async (args: {
   const updateAncestorThreadsWithThreadDataResult = await sqlMiddleware(sql`
     UPDATE threads
     SET descendent_thread_ids = ARRAY_APPEND(descendent_thread_ids, ${sql`${thread.id}::uuid`})
-    WHERE id = ANY(ARRAY[${sql`${ancestorThreads.map((t) => t.id)}::uuid`}]);
+    WHERE id = ANY(${toUuidArrayLiteral(ancestorThreads.map((at) => at.id))});
   `, "updateAncestorThreadsWithThreadData", { ancestorThreads, thread });
 
   return updateAncestorThreadsWithThreadDataResult
 };
-
-// const getPostsFromThread = async (postIds: string[]) => {
-  
-// };
 
 export default handleReplyNew;

@@ -20,9 +20,9 @@ export default class Thread {
     return new Thread({
       ...threadFromDB,
       rootPostId: root_post_id,
-      postIds: (post_ids || '{ }').slice(1, -1).split(','),
-      ancestorThreadIds: ancestor_thread_ids,
-      descendentThreadIds: descendent_thread_ids,
+      postIds: post_ids ? post_ids.slice(1, -1).split(',') : [],
+      ancestorThreadIds: ancestor_thread_ids ? ancestor_thread_ids.slice(1, -1).split(',') : [],
+      descendentThreadIds: descendent_thread_ids ? descendent_thread_ids.slice(1, -1).split(',') : [],
       createdAt: created_at,
       lastAddedTo: last_added_to
     });
@@ -44,8 +44,8 @@ export interface ThreadFromDBInterface {
   id: string;
   root_post_id: string;
   post_ids: string;
-  ancestor_thread_ids: string[];
-  descendent_thread_ids: string[];
+  ancestor_thread_ids: string;
+  descendent_thread_ids: string;
   depth: number;
   created_at: Date;
   last_added_to: Date;
