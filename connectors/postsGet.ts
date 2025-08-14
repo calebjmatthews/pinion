@@ -17,33 +17,27 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   if (posts.length === 0) return [];
 
   const postIdsLiteral = `{${posts.map((post) => post.id).join()}}`;
-  console.log(`postIdsLiteral`, postIdsLiteral);
   const threadsFromDB: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
-    WHERE root_post_id = ANY(${postIdsLiteral}::uuid[]);
+    WHERE root_post_id = ANY(${postIdsLiteral});
   `, 'threadsFromDB', { postIdsLiteral });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
-  console.log(`threads`, threads);
 
   const threadsDescendingIdsLiteral = `{${threads.map((thread) => thread.descendentThreadIds).join()}}`;
-  console.log(`threadsDescendingIdsLiteral`, threadsDescendingIdsLiteral);
   const threadsDescending: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
-    WHERE id = ANY(${threadsDescendingIdsLiteral}::uuid[]);
+    WHERE id = ANY(${threadsDescendingIdsLiteral});
   `, 'threadsDescending', { threadsDescendingIdsLiteral });
-  console.log(`threadsDescending`, threadsDescending);
   threadsDescending.forEach((threadFromDB) => threads.push(new Thread().fromDB(threadFromDB)));
-  console.log(`threads`, threads);
 
   const postReplyIds = threads.map((thread) => thread.postIds).flat();
-  console.log(`postReplyIds`, postReplyIds);
   
   let postRepliesFromDB : PostFromDBInterface[] = [];
   if (postReplyIds.length > 0) {
     const postReplyIdsLiteral = `{${postReplyIds.join()}}`;
     postRepliesFromDB = await sqlMiddleware(sql`
       SELECT * FROM posts
-      WHERE id = ANY(${postReplyIdsLiteral}::uuid[])
+      WHERE id = ANY(${postReplyIdsLiteral})
       ORDER BY created_at DESC;
     `, 'postRepliesFromDB', { postReplyIdsLiteral });
   };
@@ -57,7 +51,6 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   posts = posts.map((post) => (
     addThreadToPost({ post, threadsByPostId, postReplyMap })
   ));
-  console.log(`posts`, posts);
 
   const usersFromDB = await sqlMiddleware(sql`
     SELECT
@@ -91,7 +84,6 @@ const addThreadToPost = (args: {
       }
     });
     thread.posts = postReplies;
-    console.log(`thread`, thread);
   }
   else { return post; };
   return new Post({ ...post, thread });
