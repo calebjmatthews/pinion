@@ -2,11 +2,11 @@ import Bun, { type BunRequest } from "bun";
 import { Eta } from "eta";
 import path from "path";
 
-import postsGet from "./connectors/postsGet";
-import handleApiRequest from "./connectors/handleApiRequest";
-import handleLogIn from "./connectors/handleLogIn";
-import handleSignUp from "./connectors/handleSignUp";
-import getUserFromSession from "./connectors/getUserFromSession";
+import postsGet from "./services/postsGet";
+import handleApiRequest from "./services/handleApiRequest";
+import handleLogIn from "./services/handleLogIn";
+import handleSignUp from "./services/handleSignUp";
+import getUserFromSession from "./services/getUserFromSession";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
