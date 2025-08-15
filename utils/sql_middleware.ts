@@ -1,6 +1,6 @@
 import logDatetime from "./log_datetime";
 
-const sqlMiddleware = async (query: Bun.SQLQuery, name: string, args?: any) => {
+const sqlMiddleware = async (query: Bun.SQL.Query<any>, name: string, args?: any) => {
   if (process.env.DEBUG_SQL === 'all') {
     console.log(`${logDatetime()}: query ${name} with args ${args ? JSON.stringify(args) : 'empty'}.`);
   }
