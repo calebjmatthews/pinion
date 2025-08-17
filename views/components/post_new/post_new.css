@@ -5,17 +5,18 @@
 .multiline-input {
   flex: 1 0 auto;
   padding: 4px 8px;
-  border: 1px solid #777;
+  border: 1px solid var(--c-grey);
   border-right: none;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  background-color: var(--c-white);
   transition-property: color, background-color, border-color;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
 }
 
 .multiline-input:disabled {
-  background-color: #f9f9f9;
+  background-color: var(--c-grey-pale);
 }
 
 .multiline-submit {

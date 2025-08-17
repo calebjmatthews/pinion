@@ -20,12 +20,12 @@
   flex-direction: column;
   gap: 8px;
   padding: 16px;
-  border: 1px solid #777;
+  border: 1px solid var(--c-grey);
   border-bottom-width: 0;
   border-radius: 8px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  background: #fdfcff;
+  background: var(--c-white);
   
   header {
     line-height: 1;
@@ -46,7 +46,7 @@
 
 .post-created-at {
   font-size: 14px;
-  color: #635b6e;
+  color: var(--c-grey);
 }
 
 .post-reply-button {
@@ -55,12 +55,12 @@
   padding: 4px;
   border-radius: 8px;
   font-size: 14px;
-  color: #635b6e;
+  color: var(--c-grey);
 
   .icon {
     width: 18px;
     height: 18px;
-    fill: #635b6e;
+    fill: var(--c-grey);
   }
 }
 
@@ -71,8 +71,8 @@
 }
 
 .is-reply {
-  background: #fdfcff;
-  border: 1px solid #777;
+  background: var(--c-white);
+  border: 1px solid var(--c-grey);
   border-bottom: none;
   border-right: none;
   border-top-right-radius: 8px;
@@ -87,7 +87,7 @@
   height: 16px;
   padding: 0;
   padding-bottom: 3px;
-  border: 1px solid #777;
+  border: 1px solid var(--c-grey);
   border-radius: 12px;
 }
 
@@ -98,5 +98,5 @@
 .post-collapsed-label {
   font-size: 14px;
   font-weight: 400;
-  color: #635b6e;
+  color: var(--c-grey);
 }

@@ -4,14 +4,14 @@
   justify-content: center;
   top: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: var(--c-white);
 }
 
 #header-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #2e006e;
+  color: var(--c-primary);
 
   .site-title {
     display: flex;
@@ -39,15 +39,15 @@
     padding: 4px 8px;
     font-size: 16px;
     font-weight: 100;
-    color: #635b6e;
-    background-color: #fff;
+    color: var(--c-primary-muted);
+    background-color: var(--c-white);
     border-left: 1px solid #000;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 
     .icon {
       width: 20px;
-      fill: #635b6e;
+      fill: var(--c-primary-muted);
     }
   }
 
@@ -56,7 +56,7 @@
   }
 
   a:hover {
-    background-color: #efebf1;
+    background-color: var(--c-grey-pale);
   }
 
   .nav-label {

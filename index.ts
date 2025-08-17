@@ -7,6 +7,7 @@ import handleApiRequest from "./services/handleApiRequest";
 import handleLogIn from "./services/handleLogIn";
 import handleSignUp from "./services/handleSignUp";
 import getUserFromSession from "./services/getUserFromSession";
+import getTheme from "./services/getTheme";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
@@ -46,8 +47,9 @@ const server = Bun.serve({
     "/": async (request: BunRequest) => {
       const user = await getUserFromSession(request.cookies);
       const posts = await postsGet();
+      const theme = await getTheme();
       return new Response(
-        eta.render("./pages/index", { title: "Pinion", posts, user }), 
+        eta.render("./pages/index", { title: "Pinion", posts, user, theme }), 
         { headers: { "Content-Type": "text/html" } }
       );
     },
