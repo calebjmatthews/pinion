@@ -1,14 +1,14 @@
-@keyframes reply-new-grow-in {
+@keyframes reply-new--grow-in {
   from { max-height: 0; }
   to { max-height: 4rem; }
 }
 
-@keyframes reply-new-shrink-out {
+@keyframes reply-new--shrink-out {
   from { max-height: 4rem; }
   to { max-height: 0; }
 }
 
-#reply-new-wrapper {
+.reply-new {
   position: relative;
   overflow: hidden;
 
@@ -21,15 +21,16 @@
   }
 }
 
-#reply-new-form {
+.reply-new__form {
+  display: flex;
   width: 100%;
   padding: 0;
 }
 
-.reply-new-grow {
-  animation: reply-new-grow-in 0.6s;
+.reply-new--grow {
+  animation: reply-new--grow-in 0.6s;
 }
 
-.reply-new-shrink {
-  animation: reply-new-shrink-out 0.2s forwards;
+.reply-new--shrink {
+  animation: reply-new--shrink-out 0.2s forwards;
 }

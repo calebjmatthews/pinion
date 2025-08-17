@@ -32,7 +32,7 @@ export const postInputOnKeydown = (event: KeyboardEvent) => {
 const attach = () => {
   const formPostNew: HTMLFormElement|null = document.querySelector("#post-new");
   const inputPostNew: HTMLFormElement|null = document.querySelector("#post-new-input");
-  const userState: HTMLSpanElement|null = document.querySelector("#state-user");
+  const userState: HTMLSpanElement|null = document.querySelector("#state__user");
   try {
     if (userState?.textContent) {
       user = new User(JSON.parse(userState.textContent));

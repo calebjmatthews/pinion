@@ -6,15 +6,15 @@ let user: User|null = null;
 const formClick = async (event: Event) => {
   event.preventDefault();
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
-  let isSignUpForm = ((formLogIn?.className || '').includes('sign-up-container'));
+  let isSignUpForm = ((formLogIn?.className || '').includes('log-in--sign-up'));
   if (isSignUpForm) { signUpClick(); }
   else { logInClick(); }
 };
 
 const logInClick = async () => {
-  const emailInput: HTMLInputElement|null = document.querySelector("#log-in-email");
-  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
-  const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in-submit");
+  const emailInput: HTMLInputElement|null = document.querySelector("#log-in__email");
+  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in__password");
+  const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in__submit");
 
   if (emailInput && passwordInput && submitLogin) {
     emailInput.disabled = true;
@@ -41,16 +41,16 @@ const revealSignUp = (args: {
 }) => {
   const { emailInput, passwordInput, submitLogin } = args;
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
-  const noUserExplanation: HTMLParagraphElement|null = document.querySelector("#no-user-explanation");
-  const handleControl: HTMLDivElement|null =  document.querySelector("#log-in-handle-control");
-  const handleInput: HTMLInputElement|null = document.querySelector('#log-in-handle');
-  const passwordConfirmControl: HTMLDivElement|null =  document.querySelector("#log-in-password-confirm-control");
-  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
-  const firstNameControl: HTMLDivElement|null =  document.querySelector("#log-in-first-name-control");
-  const lastNameControl: HTMLDivElement|null =  document.querySelector("#log-in-last-name-control");
+  const noUserExplanation: HTMLParagraphElement|null = document.querySelector("#log-in__no-user-explanation");
+  const handleControl: HTMLDivElement|null =  document.querySelector("#log-in__handle-control");
+  const handleInput: HTMLInputElement|null = document.querySelector('#log-in__handle');
+  const passwordConfirmControl: HTMLDivElement|null =  document.querySelector("#log-in__password-confirm-control");
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in__password-confirm');
+  const firstNameControl: HTMLDivElement|null =  document.querySelector("#log-in__first-name-control");
+  const lastNameControl: HTMLDivElement|null =  document.querySelector("#log-in__last-name-control");
 
   if (formLogIn && noUserExplanation && handleControl && handleInput && passwordConfirmControl && passwordConfirmInput && firstNameControl && lastNameControl) {
-    formLogIn.classList = "responsive-container sign-up-container";
+    formLogIn.classList = "responsive-container log-in--sign-up";
     emailInput.disabled = false;
     passwordInput.disabled = false;
     submitLogin.disabled = false;
@@ -67,8 +67,8 @@ const revealSignUp = (args: {
 };
 
 const passwordConfirmInputChange = () => {
-  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
-  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
+  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in__password");
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in__password-confirm');
 
   if (passwordInput && passwordConfirmInput) {
     passwordConfirmInput.setCustomValidity("");
@@ -80,13 +80,13 @@ const passwordConfirmInputChange = () => {
 };
 
 const signUpClick = async () => {
-  const emailInput: HTMLInputElement|null = document.querySelector("#log-in-email");
-  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in-password");
-  const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in-submit");
-  const handleInput: HTMLInputElement|null = document.querySelector('#log-in-handle');
-  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in-password-confirm');
-  const firstNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in-first-name');
-  const lastNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in-last-name');
+  const emailInput: HTMLInputElement|null = document.querySelector("#log-in__email");
+  const passwordInput: HTMLInputElement|null = document.querySelector("#log-in__password");
+  const submitLogin: HTMLButtonElement|null = document.querySelector("#log-in__submit");
+  const handleInput: HTMLInputElement|null = document.querySelector('#log-in__handle');
+  const passwordConfirmInput: HTMLInputElement|null = document.querySelector('#log-in__password-confirm');
+  const firstNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in__first-name');
+  const lastNameHandleInput: HTMLInputElement|null = document.querySelector('#log-in__last-name');
   if (emailInput && passwordInput && submitLogin && handleInput && passwordConfirmInput && firstNameHandleInput && lastNameHandleInput) {
     emailInput.disabled = true;
     passwordInput.disabled = true;
@@ -114,7 +114,7 @@ const signUpClick = async () => {
 
 const logInOnLoad = () => {
   const formLogIn: HTMLFormElement|null = document.querySelector("#log-in");
-  const userState: HTMLSpanElement|null = document.querySelector("#state-user");
+  const userState: HTMLSpanElement|null = document.querySelector("#state__user");
   try {
     if (userState?.textContent) {
       user = new User(JSON.parse(userState.textContent));

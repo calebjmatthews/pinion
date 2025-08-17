@@ -1,0 +1,27 @@
+<header class="page-header">
+  <div class="responsive-container page-header__wrapper">
+    <span class="page-header__site-title">
+      <%~ include("../../icons/feather") %>Pinion
+    </span>
+    <nav class="page-header__nav">
+      <a>
+        <%~ include("../../icons/magnifying_glass") %>
+        <span class="page-header__nav-label">Search</a>
+      </a>
+      <a>
+        <%~ include("../../icons/globe") %>
+        <span class="page-header__nav-label">World</a>
+      </a>
+      <% if (it.user) { %>
+        <a>
+          <%~ include("../../icons/group") %>
+          <span class="page-header__nav-label">Groups</a>
+        </a>
+        <a>
+          <%~ include("../../icons/profile") %>
+          <span class="page-header__nav-label">Account</a>
+        </a>
+      <% } %>
+    </nav>
+  </div>
+</header>

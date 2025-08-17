@@ -8,11 +8,11 @@ export const hideExistingReplyNew = async (args: {
 }) => {
   const { lastPostClicked, replyNewForm } = args;
   if (lastPostClicked instanceof HTMLElement && replyNewForm.classList.contains('display-flex')) {
-    replyNewForm.classList.remove('reply-new-grow');
-    replyNewForm.classList.add('reply-new-shrink');
+    replyNewForm.classList.remove('reply-new--grow');
+    replyNewForm.classList.add('reply-new--shrink');
 
     return new Promise((resolve) => { setTimeout(() => {
-      lastPostClicked.classList.remove('replied-to');
+      lastPostClicked.classList.remove('post--replied-to');
       resolve(true);
     }, EXISTING_REPLY_HIDE_ANIMATION_DURATION); });
   };
@@ -26,11 +26,11 @@ export const revealReplyNew = (args: {
   const { replyNewForm, postClicked } = args;
 
   revealElements([replyNewForm]);
-  replyNewForm.classList.remove('reply-new-shrink');
-  replyNewForm.classList.add('reply-new-grow');
+  replyNewForm.classList.remove('reply-new--shrink');
+  replyNewForm.classList.add('reply-new--grow');
   replyNewForm.addEventListener("submit", replySubmitOnClick);
 
-  postClicked.classList.add('replied-to');
+  postClicked.classList.add('post--replied-to');
   postClicked.after(replyNewForm);
 
   const replyNewInput: HTMLTextAreaElement|null = document.querySelector('#reply-new-input');

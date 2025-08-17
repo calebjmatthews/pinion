@@ -8,11 +8,11 @@
     <script src="./scripts.js"></script>
   </head>
   <body>
-    <%~ include("../components/header/header", { user: it.user })  %>
+    <%~ include("../components/page_header/page_header", { user: it.user })  %>
     <section id="main">
       <%~ it.body %>
     </section>
-    <%~ include("../components/footer/footer") %>
+    <%~ include("../components/page_footer/page_footer") %>
   </body>
   <%~ include("../components/state/state", { user: it.user }) %>
 </html>

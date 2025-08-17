@@ -1,5 +1,5 @@
 <div id="state" class="display-none">
-  <span id="state-user">
+  <span id="state__user">
     <%= JSON.stringify(it.user) %>
   </span>
 </div>

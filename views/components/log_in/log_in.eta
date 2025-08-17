@@ -1,36 +1,36 @@
-<form id="log-in" class="responsive-container log-in-container display-none">
-  <div id="log-in-controls">
-    <p id="no-user-explanation" class="display-none"></p>
-    <div class="log-in-control-couplet">
-      <div id="log-in-email-control" class="log-in-control">
-        <label for="log-in-email" class="log-in-label">Email or Handle</label>
-        <input id="log-in-email" type="text" required placeholder="address@email.com" maxlength=254></input>
+<form id="log-in" class="responsive-container log-in display-none">
+  <div class="log-in__controls">
+    <p id="log-in__no-user-explanation" class="display-none"></p>
+    <div class="log-in__control-couplet">
+      <div id="log-in__email-control" class="log-in__control">
+        <label for="log-in__email" class="log-in__label">Email or Handle</label>
+        <input id="log-in__email" type="text" required placeholder="address@email.com" maxlength=254></input>
       </div>
-      <div id="log-in-handle-control" class="log-in-control display-none">
-        <label for="log-in-handle" class="log-in-label">Handle</label>
-        <input id="log-in-handle" type="text" placeholder="address" maxlength=200></input>
-      </div>
-    </div>
-    <div class="log-in-control-couplet">
-      <div id="log-in-password-control" class="log-in-control">
-        <label for="log-in-password" class="log-in-label">Password</label>
-        <input id="log-in-password" type="password" required minlength="8"></input>
-      </div>
-      <div id="log-in-password-confirm-control" class="log-in-control display-none">
-        <label for="log-in-password-confirm" class="log-in-label">Confirm Password</label>
-        <input id="log-in-password-confirm" type="password" minlength="8"></input>
+      <div id="log-in__handle-control" class="log-in__control display-none">
+        <label for="log-in__handle" class="log-in__label">Handle</label>
+        <input id="log-in__handle" type="text" placeholder="address" maxlength=200></input>
       </div>
     </div>
-    <div class="log-in-control-couplet">
-      <div id="log-in-first-name-control" class="log-in-control display-none">
-        <label for="log-in-first-name" class="log-in-label" placeholder="First Name">First Name (optional)</label>
-        <input id="log-in-first-name" type="text" maxlength=50></input>
+    <div class="log-in__control-couplet">
+      <div id="log-in__password-control" class="log-in__control">
+        <label for="log-in__password" class="log-in__label">Password</label>
+        <input id="log-in__password" type="password" required minlength="8"></input>
       </div>
-      <div id="log-in-last-name-control" class="log-in-control display-none">
-        <label for="log-in-last-name" class="log-in-label" placeholder="Last Name">Last Name (optional)</label>
-        <input id="log-in-last-name" type="text" maxlength=50></input>
+      <div id="log-in__password-confirm-control" class="log-in__control display-none">
+        <label for="log-in__password-confirm" class="log-in__label">Confirm Password</label>
+        <input id="log-in__password-confirm" type="password" minlength="8"></input>
+      </div>
+    </div>
+    <div class="log-in__control-couplet">
+      <div id="log-in__first-name-control" class="log-in__control display-none">
+        <label for="log-in__first-name" class="log-in__label" placeholder="First Name">First Name (optional)</label>
+        <input id="log-in__first-name" type="text" maxlength=50></input>
+      </div>
+      <div id="log-in__last-name-control" class="log-in__control display-none">
+        <label for="log-in__last-name" class="log-in__label" placeholder="Last Name">Last Name (optional)</label>
+        <input id="log-in__last-name" type="text" maxlength=50></input>
       </div>
     </div>
   </div>
-  <button role="submit" id="log-in-submit">Log in or Sign up</button>
+  <button role="submit" id="log-in__submit" class="log-in__submit">Log in or Sign up</button>
 </form>

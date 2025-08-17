@@ -7,7 +7,7 @@ let user: User|null = null;
 
 const replyClick = async (event: Event) => {
   if (!(event.target instanceof HTMLButtonElement)) return;
-  const postId = event.target.id.replace('post-reply-button-', '');
+  const postId = event.target.id.replace('post__reply-button-', '');
 
   const replyNewForm: HTMLFormElement|null = document.querySelector('#reply-new-wrapper');
   const lastPostClicked = replyNewForm?.previousElementSibling;
@@ -21,18 +21,18 @@ const replyClick = async (event: Event) => {
 
 const collapseClick = (event: Event) => {
   if (!(event.target instanceof HTMLButtonElement)) return;
-  const postId = event.target.id.replace('post-toggle-', '');
+  const postId = event.target.id.replace('post__toggle-', '');
 
   const postWrapper: HTMLElement|null = event.target.parentElement;
   hideElements([postWrapper]);
 
-  const postCollapsed: HTMLElement|null = document.querySelector(`#post-collapsed-${postId}`);
+  const postCollapsed: HTMLElement|null = document.querySelector(`#post--collapsed-${postId}`);
   revealElements([postCollapsed]);
 };
 
 const expandClick = (event: Event) => {
   if (!(event.target instanceof HTMLButtonElement)) return;
-  const postId = event.target.id.replace('post-expand-button-', '');
+  const postId = event.target.id.replace('post__expand-button-', '');
 
   const postWrapper: HTMLElement|null = document.querySelector(`#post-wrapper-${postId}`);
   revealElements([postWrapper]);
@@ -42,10 +42,10 @@ const expandClick = (event: Event) => {
 };
 
 const postsOnLoad = () => {
-  const postReplyButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post-reply-button');
-  const postToggleButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post-toggle');
-  const postExpandButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post-expand-button');
-  const userState: HTMLSpanElement|null = document.querySelector("#state-user");
+  const postReplyButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post__reply-button');
+  const postToggleButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post__toggle');
+  const postExpandButtons: NodeListOf<HTMLElement> = document.querySelectorAll('.post__expand-button');
+  const userState: HTMLSpanElement|null = document.querySelector("#state__user");
 
   try {
     if (userState?.textContent) {

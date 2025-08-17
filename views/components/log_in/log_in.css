@@ -1,34 +1,34 @@
-.log-in-container {
-  #log-in-controls {
+.log-in {
+  .log-in__controls {
     flex: 1 0 auto;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border-right-width: 0;
   }
 
-  #log-in-submit {
+  .log-in__submit {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
   }
 }
 
-.sign-up-container {
+.log-in--sign-up {
   display: flex;
   flex-direction: column;
 
-  .log-in-control-couplet {
+  .log-in__control-couplet {
     flex-direction: column;
 
     @media (min-width: 430px) {
       flex-direction: row;
     }
   }
-  #log-in-controls {
+  .log-in__controls {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-bottom-width: 0;
   }
-  #log-in-submit {
+  .log-in__submit {
     height: 52px;
     min-height: unset;
     width: 100%;
@@ -37,7 +37,7 @@
   }
 }
 
-#log-in-controls {
+.log-in__controls {
   flex-direction: column;
   gap: 4px;
   padding: 8px;
@@ -45,12 +45,12 @@
   border: 1px solid var(--c-grey);
 }
 
-.log-in-control-couplet {
+.log-in__control-couplet {
   display: flex;
   gap: 8px;
 }
 
-.log-in-control {
+.log-in__control {
   flex-direction: column;
   width: 100%;
 
@@ -59,11 +59,11 @@
   }
 }
 
-.log-in-label {
+.log-in__label {
   font-size: 0.875rem;
 }
 
-#log-in-submit {
+.log-in__submit {
   flex: 0.5 0 auto;
   min-height: 100%;
   min-width: 100px;

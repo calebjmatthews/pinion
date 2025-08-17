@@ -1,20 +1,20 @@
-.post-wrapper {
+.post {
   border-radius: 8px;
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
 }
 
-.post-toggle {
+.post__toggle {
   width: 16px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   border-right-width: 0;
 }
 
-.post-inner-wrapper {
+.post__inner-wrapper {
   flex: 1;
 }
 
-.post {
+.post__main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -39,17 +39,17 @@
   }
 }
 
-.post.replied-to {
+.post__main.post--replied-to {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.post-created-at {
+.post--created-at {
   font-size: 14px;
   color: var(--c-grey);
 }
 
-.post-reply-button {
+.post__reply-button {
   align-items: center;
   gap: 2px;
   padding: 4px;
@@ -64,13 +64,13 @@
   }
 }
 
-.post-collapsed {
+.post--collapsed {
   align-items: center;
   width: 100%;
   padding-left: 8px;
 }
 
-.is-reply {
+.post--is-reply {
   background: var(--c-white);
   border: 1px solid var(--c-grey);
   border-bottom: none;
@@ -79,7 +79,7 @@
   border-bottom-right-radius: 8px;
 }
 
-.post-expand-button {
+.post__expand-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,11 +91,11 @@
   border-radius: 12px;
 }
 
-.post-collapsed-header {
+.post--collapsed__header {
   padding: 8px;
 }
 
-.post-collapsed-label {
+.post--collapsed__label {
   font-size: 14px;
   font-weight: 400;
   color: var(--c-grey);
