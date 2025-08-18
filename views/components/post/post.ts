@@ -20,6 +20,7 @@ const replyClick = async (event: Event) => {
 };
 
 const collapseClick = (event: Event) => {
+  console.log(`inside collapseClick`);
   if (!(event.target instanceof HTMLButtonElement)) return;
   const postId = event.target.id.replace('post__toggle-', '');
 
@@ -53,18 +54,20 @@ const postsOnLoad = () => {
     }
   } catch { };
 
-  if (postReplyButtons.length > 0 && postToggleButtons.length > 0 && postExpandButtons.length > 0
-    && userState) {
-    if (!user) return;
-    postReplyButtons.forEach((postReplyButton) => {
-      revealElements([postReplyButton]);
-      postReplyButton.addEventListener("click", replyClick);
-    });
+  if (postToggleButtons.length > 0 && postExpandButtons.length > 0) {
     postToggleButtons.forEach((postToggleButton) => {
       postToggleButton.addEventListener("click", collapseClick);
     });
     postExpandButtons.forEach((postExpandButton) => {
       postExpandButton.addEventListener("click", expandClick);
+    });
+  }
+
+  if (postReplyButtons.length > 0) {
+    if (!user) return;
+    postReplyButtons.forEach((postReplyButton) => {
+      revealElements([postReplyButton]);
+      postReplyButton.addEventListener("click", replyClick);
     });
   }
   else { setTimeout(() => postsOnLoad(), 10); }
