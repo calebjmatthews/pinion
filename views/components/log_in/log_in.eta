@@ -2,7 +2,7 @@
   <div class="log-in__controls">
     <p id="log-in__no-user-explanation" class="display-none"></p>
     <div class="log-in__control-couplet">
-      <div id="log-in__email-control" class="log-in__control">
+      <div id="log-in__email-control" class="log-in__control display-flex">
         <label for="log-in__email" class="log-in__label">Email or Handle</label>
         <input id="log-in__email" type="text" required placeholder="address@email.com" maxlength=254></input>
       </div>
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="log-in__control-couplet">
-      <div id="log-in__password-control" class="log-in__control">
+      <div id="log-in__password-control" class="log-in__control display-flex">
         <label for="log-in__password" class="log-in__label">Password</label>
         <input id="log-in__password" type="password" required minlength="8"></input>
       </div>
