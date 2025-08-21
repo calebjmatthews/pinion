@@ -22,7 +22,12 @@
     </article>
     <% if (it.post.thread?.posts.length > 0) { %>
       <% it.post.thread.posts.forEach((threadPost) => { %>
-        <%~ include("./post", { post: threadPost, depth: it.depth+1 }) %>
+        <% if (it.depth <= 10) { %>
+          <%~ include("./post", { post: threadPost, depth: it.depth+1 }) %>
+        <% } %>
+        <% if (it.depth > 10) { %>
+          <%~ include("../post_overflow/post_overflow", { post: threadPost }) %>
+        <% } %>
       <% }) %>
     <% } %>
   </div>

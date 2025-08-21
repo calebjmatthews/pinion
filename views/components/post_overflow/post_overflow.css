@@ -1,0 +1,31 @@
+.post-overflow {
+  display: flex;
+  width: 100%;
+  padding: 8px;
+  background-color: var(--c-white);
+  border: 1px solid var(--c-grey);
+  border-radius: 8px;
+  cursor: pointer;
+
+  svg {
+    fill: var(--c-grey);
+    transform: rotate(45deg);
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    svg {
+      transform: rotate(90deg);
+    }
+
+    .post-overflow__label {
+      color: var(--c-primary);
+    }
+  }
+}
+
+.post-overflow__label {
+  padding-left: 4px;
+  color: var(--c-grey);
+  transition: color 0.2s ease-in-out;
+}

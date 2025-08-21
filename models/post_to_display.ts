@@ -27,7 +27,7 @@ export default class PostToDisplay {
 
     let threadToDisplay: ThreadToDisplay|undefined = undefined;
     if (thread?.posts) {
-      threadToDisplay = { posts: 
+      threadToDisplay = { replyCount: thread.replyCount, posts: 
         thread.posts.map((threadPost) => (
           new PostToDisplay().fromPost({ post: threadPost, userMap }))
         ).filter((threadPost) => !!threadPost)
@@ -67,5 +67,6 @@ interface PostToDisplayInterface {
 };
 
 interface ThreadToDisplay {
-  posts: PostToDisplay[]
+  replyCount?: number;
+  posts: PostToDisplay[];
 }

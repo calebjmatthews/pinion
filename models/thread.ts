@@ -8,6 +8,7 @@ export default class Thread {
   ancestorThreadIds: string[] = [];
   descendentThreadIds: string[] = [];
   depth: number = 0;
+  replyCount: number = 0;
   createdAt: Date = new Date();
   lastAddedTo: Date = new Date();
 
@@ -41,6 +42,12 @@ export default class Thread {
       created_at: createdAt,
       last_added_to: lastAddedTo
     };
+  };
+
+  getReplyCount() {
+    let count = this.posts.length;
+    this.posts.forEach((p) => count += (p.thread ? p.thread.getReplyCount() : 0));
+    return count;
   };
 };
 

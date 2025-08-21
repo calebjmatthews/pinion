@@ -52,6 +52,11 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   posts = posts.map((post) => (
     addThreadToPost({ post, threadsByPostId, postReplyMap })
   ));
+  threads.forEach((thread) => {
+    if (thread.depth >= 10) {
+      thread.replyCount = thread.getReplyCount();
+    }
+  });
 
   const usersFromDB = await sqlMiddleware(sql`
     SELECT
