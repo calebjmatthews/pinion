@@ -1,5 +1,8 @@
 .post {
   border-radius: 8px;
+}
+
+.post--is-top-level {
   box-shadow: 0 2px 4px #00000029, 0 4px 8px #0000001a, 0 8px 16px #00000012, 0 16px 32px #0000000d;
 }
 
@@ -61,6 +64,14 @@
     width: 18px;
     height: 18px;
     fill: var(--c-grey);
+    transform: rotate(0deg);
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    .icon {
+      transform: rotate(-90deg);
+    }
   }
 }
 

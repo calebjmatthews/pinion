@@ -7,14 +7,14 @@
   border-radius: 8px;
   cursor: pointer;
 
-  svg {
+  .icon {
     fill: var(--c-grey);
     transform: rotate(45deg);
     transition: transform 0.2s;
   }
 
   &:hover {
-    svg {
+    .icon {
       transform: rotate(90deg);
     }
 

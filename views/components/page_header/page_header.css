@@ -1,9 +1,11 @@
 .page-header {
+  z-index: 1;
   position: sticky;
   display: flex;
   justify-content: center;
   top: 0;
   width: 100%;
+  border-bottom: 1px solid var(--c-primary-very-light);
   background-color: var(--c-white);
 }
 

@@ -2,6 +2,7 @@ const getTheme = async () => {
   return `
     --c-primary: #2e006e;
     --c-primary-muted: #644e82;
+    --c-primary-very-light: #f5f1fa;
     --c-primary-pale: #fcf9ff;
     --c-black: #14101a;
     --c-grey: #635b6e;
