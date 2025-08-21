@@ -1,8 +1,8 @@
 <a class="post-overflow" href="/post/<%= it.post.id %>">
   <%~ include("../../icons/expand") %>
   <span class="post-overflow__label">See reply from <%= it.post.userName %>
-  <% if (it.post.thread?.replyCount) { %>
-    <span>and <%= it.post.thread.replyCount %> more</span>
+  <% if (it.post.thread?.replyCount > 1) { %>
+    <span>and <%= (it.post.thread.replyCount - 1) %> more</span>
   <% } %>
   </span>
 </a>
