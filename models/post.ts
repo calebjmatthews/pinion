@@ -23,6 +23,11 @@ export default class Post {
       isReply: is_reply
     });
   };
+  
+  toDB(post: Post): PostFromDBInterface {
+    const { id, userId, body, createdAt, isRoot, isReply } = post;
+    return { id, user_id: userId, created_at: createdAt, body, is_root: isRoot, is_reply: isReply };
+  }
 };
 
 interface PostInterface {

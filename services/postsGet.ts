@@ -10,7 +10,7 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   const postsFromDB: PostFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM posts
     WHERE is_reply IS false
-    ORDER BY created_at DESC;
+    ORDER BY created_at ASC;
   `, 'postsFromDB');
   let posts = postsFromDB.map((postFromDB) => new Post().fromDB(postFromDB));
 
@@ -23,7 +23,8 @@ const postsGet: () => Promise<PostToDisplay[]> = async() => {
   `, 'threadsFromDB', { postIdsLiteral });
   const threads = threadsFromDB.map((threadFromDB) => new Thread().fromDB(threadFromDB));
 
-  const threadsDescendingIdsLiteral = `{${threads.map((thread) => thread.descendentThreadIds).join()}}`;
+  const threadsDescendingIdsLiteral = `{${threads.map((thread) => thread.descendentThreadIds)
+    .filter(t => t?.length > 0).join()}}`;
   const threadsDescending: ThreadFromDBInterface[] = await sqlMiddleware(sql`
     SELECT * FROM threads
     WHERE id = ANY(${threadsDescendingIdsLiteral});

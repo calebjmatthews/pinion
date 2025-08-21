@@ -20,7 +20,6 @@ const replyClick = async (event: Event) => {
 };
 
 const collapseClick = (event: Event) => {
-  console.log(`inside collapseClick`);
   if (!(event.target instanceof HTMLButtonElement)) return;
   const postId = event.target.id.replace('post__toggle-', '');
 

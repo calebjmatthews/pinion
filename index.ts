@@ -8,6 +8,7 @@ import handleLogIn from "./services/handleLogIn";
 import handleSignUp from "./services/handleSignUp";
 import getUserFromSession from "./services/getUserFromSession";
 import getTheme from "./services/getTheme";
+import createExampleDB from "./services/createExampleDB";
 
 await Bun.build({
   entrypoints: ['./styles.ts', './scripts.ts'],
@@ -38,6 +39,10 @@ const server = Bun.serve({
 
     "/sign_up": {
       POST: async (request) => handleSignUp(request)
+    },
+
+    "/create_example_db": {
+      GET: async (request) => createExampleDB()
     },
 
     "/api/*": {

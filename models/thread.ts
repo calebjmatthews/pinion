@@ -26,7 +26,22 @@ export default class Thread {
       createdAt: created_at,
       lastAddedTo: last_added_to
     });
-  }
+  };
+
+  toDB(thread: Thread) {
+    const { id, rootPostId, postIds, ancestorThreadIds, descendentThreadIds, depth, createdAt, 
+      lastAddedTo } = thread;
+    return {
+      id,
+      root_post_id: rootPostId,
+      post_ids: `{${postIds.join()}}`,
+      ancestor_thread_ids: `{${ancestorThreadIds.join()}}`,
+      descendent_thread_ids: `{${descendentThreadIds.join()}}`,
+      depth,
+      created_at: createdAt,
+      last_added_to: lastAddedTo
+    };
+  };
 };
 
 interface ThreadInterface {
